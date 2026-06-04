@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import HeroSection from "@/components/home/HeroSection";
+import HeroSection, { heroContainer, heroItem } from "@/components/home/HeroSection";
 import SearchBar from "@/components/home/SearchBar";
 import TrustSignals from "@/components/home/TrustSignals";
 import PopularAreas from "@/components/home/PopularAreas";
@@ -116,19 +116,25 @@ export default function HomeClient() {
 
   return (
     <main className="flex-1">
-      <HeroSection />
-      <section className="px-6">
-        <TrustSignals />
-        <PopularAreas onSelect={selectSaved} />
-        <div className="mt-8">
-          <SearchBar
-            onSearch={(q, n) => search(q, strict, n)}
-            loading={status === "loading"}
-            strict={strict}
-            onStrictChange={setStrict}
-          />
-        </div>
-      </section>
+      <motion.div variants={heroContainer} initial="hidden" animate="visible">
+        <HeroSection />
+        <section className="px-6">
+          <motion.div variants={heroItem}>
+            <TrustSignals />
+          </motion.div>
+          <motion.div variants={heroItem}>
+            <PopularAreas onSelect={selectSaved} />
+          </motion.div>
+          <motion.div variants={heroItem} className="mt-8">
+            <SearchBar
+              onSearch={(q, n) => search(q, strict, n)}
+              loading={status === "loading"}
+              strict={strict}
+              onStrictChange={setStrict}
+            />
+          </motion.div>
+        </section>
+      </motion.div>
 
       <div ref={resultsRef} className="mx-auto max-w-5xl px-6 py-12">
         {note && status === "done" && (

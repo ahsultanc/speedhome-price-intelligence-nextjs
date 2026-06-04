@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 import type { Listing, SummaryRow } from "@/lib/types";
 import { cn, formatPrice, formatSqft, getGoodDealThreshold, slugifyArea } from "@/lib/utils";
@@ -158,7 +159,13 @@ export default function ListingsTable({
               </thead>
               <tbody>
                 {rows.map((l, i) => (
-                  <tr key={l.link + i} className="border-b border-border/60 align-top">
+                  <motion.tr
+                    key={l.link + i}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: Math.min(i, 9) * 0.06, ease: "easeOut" }}
+                    className="border-b border-border/60 align-top"
+                  >
                     <td className="max-w-[300px] px-4 py-3">
                       <span className="block font-medium text-primary">{l.title}</span>
                       <span className="mt-0.5 block text-xs text-secondary line-clamp-1">
@@ -193,7 +200,7 @@ export default function ListingsTable({
                         Lihat di SPEEDHOME <ExternalLink className="h-3.5 w-3.5" />
                       </a>
                     </td>
-                  </tr>
+                  </motion.tr>
                 ))}
               </tbody>
             </table>
@@ -202,7 +209,13 @@ export default function ListingsTable({
           {/* Mobile cards */}
           <div className="space-y-3 md:hidden">
             {rows.map((l, i) => (
-              <div key={l.link + i} className="rounded-card border border-border bg-card p-4 shadow-subtle">
+              <motion.div
+                key={l.link + i}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: Math.min(i, 9) * 0.06, ease: "easeOut" }}
+                className="rounded-card border border-border bg-card p-4 shadow-subtle"
+              >
                 <div className="flex items-start justify-between gap-3">
                   <p className="font-medium text-primary">{l.title}</p>
                   <span className="shrink-0 font-medium tabular-nums text-primary">
@@ -228,7 +241,7 @@ export default function ListingsTable({
                 >
                   Lihat di SPEEDHOME <ExternalLink className="h-3 w-3" />
                 </a>
-              </div>
+              </motion.div>
             ))}
           </div>
         </>

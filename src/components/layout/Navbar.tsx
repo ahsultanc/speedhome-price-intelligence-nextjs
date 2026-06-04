@@ -5,11 +5,10 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Building2, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SOURCE_REPO } from "@/lib/constants";
 
 const tabs = [
-  { href: "/", label: "Single Search" },
-  { href: "/compare", label: "Compare Areas" },
+  { href: "/", label: "Cari Area" },
+  { href: "/compare", label: "Bandingkan Area" },
 ];
 
 export default function Navbar() {
@@ -52,14 +51,6 @@ export default function Navbar() {
               {t.label}
             </Link>
           ))}
-          <a
-            href={SOURCE_REPO}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ml-2 rounded-full border border-border px-4 py-2 text-sm font-medium text-primary transition-colors hover:border-accent hover:text-accent"
-          >
-            GitHub
-          </a>
         </div>
 
         <button

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, animate, useMotionValue, useTransform } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { OverallMetrics } from "@/lib/utils";
 import { formatPrice, formatDecimal } from "@/lib/utils";
 
@@ -22,6 +22,73 @@ function Counter({
     return () => controls.stop();
   }, [value, mv, duration]);
   return <motion.span>{text}</motion.span>;
+}
+
+// Fair Price hero counter: starts at the area average and counts DOWN to the
+// fair price — visually showing "this is cheaper than average" without words.
+function FairPriceCounter({
+  averagePrice,
+  fairPrice,
+}: {
+  averagePrice: number | null;
+  fairPrice: number | null;
+}) {
+  const start = averagePrice ?? fairPrice ?? 0;
+  const [displayValue, setDisplayValue] = useState(start);
+  const [animating, setAnimating] = useState(true);
+
+  useEffect(() => {
+    if (fairPrice === null || Number.isNaN(fairPrice)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- no value to animate to
+      setAnimating(false);
+      return;
+    }
+    const startVal = averagePrice ?? fairPrice;
+    const endVal = fairPrice;
+    setDisplayValue(startVal);
+    setAnimating(true);
+
+    let raf = 0;
+    const timer = setTimeout(() => {
+      const startTime = performance.now();
+      const duration = 1500;
+      const step = () => {
+        const elapsed = performance.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3); // easeOut cubic
+        setDisplayValue(Math.round(startVal + (endVal - startVal) * eased));
+        if (progress < 1) {
+          raf = requestAnimationFrame(step);
+        } else {
+          setAnimating(false);
+        }
+      };
+      raf = requestAnimationFrame(step);
+    }, 500);
+
+    return () => {
+      clearTimeout(timer);
+      cancelAnimationFrame(raf);
+    };
+  }, [averagePrice, fairPrice]);
+
+  const showLabel = animating && averagePrice !== null && averagePrice !== fairPrice;
+
+  return (
+    <>
+      <span
+        className="block min-h-[1.1rem] text-xs text-secondary transition-opacity duration-500"
+        style={{ opacity: showLabel ? 0.6 : 0 }}
+        aria-hidden={!showLabel}
+      >
+        dari rata-rata {formatPrice(averagePrice)}
+      </span>
+      <p className="mt-1 font-display text-5xl font-bold tabular-nums text-primary">
+        {formatPrice(displayValue)}
+        <span className="text-2xl font-semibold text-secondary">/bulan</span>
+      </p>
+    </>
+  );
 }
 
 export default function MetricCards({
@@ -73,10 +140,10 @@ export default function MetricCards({
         <p className="text-xs font-medium uppercase tracking-wider text-accent">
           Harga wajar{heroUnit ? ` ${heroUnit}` : ""} di {area}
         </p>
-        <p className="mt-1 font-display text-5xl font-bold tabular-nums text-primary">
-          <Counter value={heroFair ?? metrics.fairPrice} format={formatPrice} duration={1.2} />
-          <span className="text-2xl font-semibold text-secondary">/bulan</span>
-        </p>
+        <FairPriceCounter
+          averagePrice={metrics.avg}
+          fairPrice={heroFair ?? metrics.fairPrice}
+        />
       </motion.div>
     </div>
   );
