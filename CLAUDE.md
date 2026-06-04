@@ -32,7 +32,7 @@ Build it like your name is on it. Because it is.
 - [x] Phase 2 — Single Search core pages
 - [x] Phase 3 — Compare Mode
 - [x] Phase 2.5 — Expanded Single-Search features (Section C)
-- [ ] Phase 4 — Polish & Deploy
+- [x] Phase 4 — Polish & Deploy (LIVE: speedhome-price-intelligence-nextjs.vercel.app)
 
 Update tracker setiap phase selesai.
 
