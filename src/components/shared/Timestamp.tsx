@@ -9,13 +9,23 @@ export default function Timestamp({
 }) {
   if (!time) return null;
   const hhmm = time.length >= 5 ? time.slice(0, 5) : time;
+  const n = count ?? 0;
+
+  let scarcity = "";
+  if (n > 0) {
+    if (n < 50) scarcity = "Pilihan terbatas di area ini hari ini.";
+    else if (n <= 100) scarcity = "Pilihan cukup tersedia hari ini.";
+    else scarcity = "Banyak pilihan tersedia hari ini.";
+  }
+
   return (
-    <p className="flex flex-wrap items-center justify-center gap-1.5 text-center text-sm text-secondary">
-      <Clock className="h-4 w-4 text-accent" />
-      Berdasarkan{" "}
-      <strong className="text-primary">{(count ?? 0).toLocaleString("en-MY")}</strong>{" "}
-      listing aktif — diambil langsung dari SPEEDHOME hari ini pukul{" "}
-      <strong className="text-primary">{hhmm} MYT</strong>
-    </p>
+    <div className="text-center">
+      <p className="flex items-center justify-center gap-1.5 text-sm text-secondary">
+        <Clock className="h-4 w-4 text-accent" />
+        <strong className="text-primary">{n.toLocaleString("en-MY")}</strong> listing
+        aktif · {hhmm} MYT hari ini
+      </p>
+      {scarcity && <p className="mt-0.5 text-xs text-secondary">{scarcity}</p>}
+    </div>
   );
 }

@@ -13,9 +13,13 @@ type Sort = "best" | "price-asc" | "price-desc" | "sqft-asc" | "sqft-desc";
 export default function ListingsTable({
   listings,
   summary,
+  count,
+  area,
 }: {
   listings: Listing[];
   summary: SummaryRow[];
+  count?: number;
+  area?: string;
 }) {
   const roomTypes = useMemo(
     () => Array.from(new Set(listings.map((l) => l.room_type).filter(Boolean))).sort(),
@@ -130,7 +134,7 @@ export default function ListingsTable({
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 text-secondary">{l.furnishing}</td>
                 <td className="px-4 py-3">
-                  <FairDealContext listing={l} fairPrice={fairOf(l)} />
+                  <FairDealContext listing={l} fairPrice={fairOf(l)} count={count} area={area} />
                 </td>
                 <td className="px-4 py-3">
                   <a
@@ -175,7 +179,7 @@ export default function ListingsTable({
             <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-secondary">
               <span>{l.room_type}</span>
               <span>{formatSqft(l.sqft)}</span>
-              <FairDealContext listing={l} fairPrice={fairOf(l)} />
+              <FairDealContext listing={l} fairPrice={fairOf(l)} count={count} area={area} />
             </div>
             <div className="mt-1">
               <AvailabilitySignal listing={l} fairPrice={fairOf(l)} />

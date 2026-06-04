@@ -188,7 +188,12 @@ export default function Home() {
               <h2 className="font-display text-2xl font-semibold text-primary">
                 Unit Listings
               </h2>
-              <ListingsTable listings={shown} summary={summary} />
+              <ListingsTable
+                listings={shown}
+                summary={summary}
+                count={result?.meta?.in_area_count}
+                area={area}
+              />
             </section>
 
             <div className="grid gap-4 md:grid-cols-2">
