@@ -1,5 +1,6 @@
 import type { OverallMetrics } from "@/lib/utils";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, slugifyArea } from "@/lib/utils";
+import { buildSpeedhomeURL } from "@/lib/utm";
 
 export default function VerdictBox({
   nameA,
@@ -17,14 +18,13 @@ export default function VerdictBox({
   scrapedB?: string | null;
 }) {
   const lines: string[] = [];
+  let cheaper = nameA;
 
   if (a.avg != null && b.avg != null && a.avg !== b.avg) {
-    const cheaper = a.avg < b.avg ? nameA : nameB;
+    cheaper = a.avg < b.avg ? nameA : nameB;
     const diff = Math.abs(a.avg - b.avg);
     lines.push(
-      `💰 ${cheaper} lebih murah ${formatPrice(diff)}/bulan = ${formatPrice(
-        diff * 12,
-      )}/tahun lebih hemat.`,
+      `💰 ${cheaper} lebih murah ${formatPrice(diff)}/bulan = ${formatPrice(diff * 12)}/tahun lebih hemat.`,
     );
   }
   if (a.perSqft != null && b.perSqft != null && a.perSqft !== b.perSqft) {
@@ -34,10 +34,7 @@ export default function VerdictBox({
   if (a.count && b.count && a.count !== b.count) {
     const more = a.count > b.count ? nameA : nameB;
     lines.push(
-      `🏘️ ${more} punya lebih banyak pilihan (${Math.max(
-        a.count,
-        b.count,
-      )} vs ${Math.min(a.count, b.count)} listing).`,
+      `🏘️ ${more} punya lebih banyak pilihan (${Math.max(a.count, b.count)} vs ${Math.min(a.count, b.count)} listing).`,
     );
   }
 
@@ -55,9 +52,21 @@ export default function VerdictBox({
           Belum cukup data untuk menyimpulkan perbandingan.
         </p>
       )}
+
+      <p className="mt-5 font-medium">
+        Datanya sudah bicara. Sekarang tinggal cari unitnya.
+      </p>
+      <a
+        href={buildSpeedhomeURL(slugifyArea(cheaper), "compare-verdict")}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-3 inline-block rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-white"
+      >
+        Cari Unit di {cheaper} di SPEEDHOME →
+      </a>
+
       <p className="mt-5 border-t border-white/15 pt-3 text-xs text-background/70">
-        💡 Ingin bandingkan lebih dari 2 area? Gunakan Single Search untuk
-        masing-masing. · Data — A: {scrapedA ?? "—"} · B: {scrapedB ?? "—"} MYT
+        Data — A: {scrapedA ?? "—"} · B: {scrapedB ?? "—"} MYT
       </p>
     </div>
   );

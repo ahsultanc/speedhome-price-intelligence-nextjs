@@ -15,11 +15,11 @@ export default function AreaIntelCard({ area }: { area?: string | null }) {
 
       <div className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
         <div>
-          <p className="text-xs uppercase tracking-wider text-secondary">Cocok untuk</p>
+          <p className="text-xs uppercase tracking-wider text-secondary">Paling cocok buat:</p>
           <p className="text-primary">{intel.cocok}</p>
         </div>
         <div>
-          <p className="text-xs uppercase tracking-wider text-secondary">Highlight</p>
+          <p className="text-xs uppercase tracking-wider text-secondary">Yang perlu kamu tahu:</p>
           <p className="text-primary">{intel.highlight}</p>
         </div>
       </div>

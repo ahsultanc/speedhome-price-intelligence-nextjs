@@ -7,9 +7,9 @@ export default function Footer() {
         <p className="font-display text-lg text-primary">
           SPEEDHOME Price Intelligence
         </p>
-        <p className="mt-2 max-w-md text-sm text-secondary">
-          Data from SPEEDHOME.com · Not affiliated with SPEEDHOME. For educational
-          use only.
+        <p className="mt-2 max-w-lg text-sm text-secondary">
+          Data dari SPEEDHOME.com · Dibuat karena kami juga pernah bingung dengan
+          harga sewa. · Tidak berafiliasi dengan SPEEDHOME.
         </p>
         <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-secondary">
           <span>Built by Ahmad Sultan Chaeruddin · Juni 2026</span>

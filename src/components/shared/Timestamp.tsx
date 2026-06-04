@@ -13,9 +13,9 @@ export default function Timestamp({
 
   let scarcity = "";
   if (n > 0) {
-    if (n < 50) scarcity = "Pilihan terbatas di area ini hari ini.";
-    else if (n <= 100) scarcity = "Pilihan cukup tersedia hari ini.";
-    else scarcity = "Banyak pilihan tersedia hari ini.";
+    if (n < 50) scarcity = "Pilihan terbatas hari ini.";
+    else if (n <= 100) scarcity = "Pilihan cukup tersedia.";
+    else scarcity = "Banyak pilihan tersedia.";
   }
 
   return (

@@ -16,6 +16,12 @@ export default function ListingCompletenessBadge({
       : c.tone === "medium"
         ? "text-accent"
         : "text-secondary";
+  const label =
+    c.tone === "good"
+      ? "Info lengkap"
+      : c.tone === "medium"
+        ? "Info kurang lengkap"
+        : "Info minim — tanya langsung";
 
   return (
     <span
@@ -25,7 +31,7 @@ export default function ListingCompletenessBadge({
         tone,
       )}
     >
-      {c.emoji} {c.label}
+      {c.emoji} {label}
     </span>
   );
 }

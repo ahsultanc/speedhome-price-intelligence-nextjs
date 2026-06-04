@@ -26,28 +26,32 @@ export default function BudgetFilter({ listings }: { listings: Listing[] }) {
   return (
     <div className="rounded-card border border-border bg-card p-5 shadow-subtle">
       <label className="flex items-center gap-2 text-sm font-medium text-primary">
-        <Wallet className="h-4 w-4 text-accent" /> Budget sewa per bulan (RM)
+        <Wallet className="h-4 w-4 text-accent" /> Berapa budget sewa kamu?
       </label>
       <input
         inputMode="numeric"
         value={budget}
         onChange={(e) => setBudget(e.target.value)}
-        placeholder="contoh: 1500"
+        placeholder="contoh: 2000"
         className="mt-2 w-full rounded-lg border border-border bg-background px-4 py-2.5 text-primary placeholder:text-secondary focus:outline-none"
       />
       {valid && (
         <div className="mt-3 space-y-1 text-sm">
           <p className="text-secondary">
-            Berdasarkan budget <strong className="text-primary">{formatPrice(n)}</strong>/bulan:
+            Dengan budget <strong className="text-primary">{formatPrice(n)}</strong>/bulan:
           </p>
-          <p className="text-success">✅ {inBudget} listing dalam budget</p>
+          <p className="text-success">✅ {inBudget} listing cocok buat kamu</p>
           <p className="text-accent">⚠️ {near} listing sedikit di atas budget</p>
           <p className="text-secondary">❌ {out} listing di luar budget</p>
+          {inBudget > 0 && (
+            <p className="pt-1 text-primary">
+              Berdasarkan budget {formatPrice(n)} kamu, ini yang paling worth it:{" "}
+              <span className="text-secondary">lihat di tabel listing bawah.</span>
+            </p>
+          )}
         </div>
       )}
-      <p className="mt-3 text-xs text-secondary">
-        Budget bersifat privat — tidak disimpan atau dikirim ke server.
-      </p>
+      <p className="mt-3 text-xs text-secondary">Privat — tidak kami simpan.</p>
     </div>
   );
 }

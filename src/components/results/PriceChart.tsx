@@ -59,7 +59,7 @@ export default function PriceChart({ summary }: { summary: SummaryRow[] }) {
         className="mt-3 flex items-center gap-1 text-sm font-medium text-secondary transition-colors hover:text-primary"
       >
         <ChevronDown className={cn("h-4 w-4 transition-transform", open && "rotate-180")} />
-        Advanced: Price range (min–max) per unit type
+        Lihat sebaran harga →
       </button>
       {open && (
         <ResponsiveContainer width="100%" height={280}>

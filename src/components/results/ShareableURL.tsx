@@ -43,7 +43,9 @@ export default function ShareableURL({
         className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-primary transition-colors hover:border-accent hover:text-accent"
       >
         {copied ? <Check className="h-4 w-4 text-success" /> : <Link2 className="h-4 w-4" />}
-        {copied ? "Link disalin! Simpan sebagai bookmark." : "Simpan pencarian ini"}
+        {copied
+          ? "Link disalin! Bagikan ke siapapun yang butuh data ini."
+          : "🔗 Simpan atau bagikan hasil pencarian ini"}
       </button>
 
       {saved.length > 0 && (

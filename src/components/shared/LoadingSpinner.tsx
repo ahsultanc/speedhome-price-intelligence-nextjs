@@ -1,5 +1,5 @@
 export default function LoadingSpinner({
-  label = "Mengambil data dari pasar…",
+  label = "Sedang mengambil data untuk kamu...",
 }: {
   label?: string;
 }) {

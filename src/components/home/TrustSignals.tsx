@@ -1,10 +1,9 @@
-import { MapPin, Radio, Gift, LogIn } from "lucide-react";
+import { MapPin, Gift, LogIn } from "lucide-react";
 
 const signals = [
-  { icon: MapPin, label: "21 area" },
-  { icon: Radio, label: "Real-time" },
+  { icon: MapPin, label: "21 area Malaysia" },
   { icon: Gift, label: "Gratis" },
-  { icon: LogIn, label: "No login" },
+  { icon: LogIn, label: "Tanpa daftar" },
 ];
 
 export default function TrustSignals() {

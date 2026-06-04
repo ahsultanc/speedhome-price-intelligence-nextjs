@@ -19,45 +19,34 @@ export default function FairDealContext({
   }
   const dev = (p - fairPrice) / fairPrice;
 
-  // Above average (> +20%) — neutral, no extra line.
+  // Above market (> +20%) — loss framing (neutral colour, never red).
   if (dev > 0.2) {
+    const diff = Math.round(p - fairPrice);
     return (
       <span
-        title={`Rata-rata area ini ${formatPrice(fairPrice)}/bulan. Untuk penyewa: ada potensi negosiasi. Untuk landlord: unit di segmen premium.`}
-        className="cursor-help whitespace-nowrap text-xs text-secondary"
+        title="Untuk penyewa: ada potensi negosiasi. Untuk landlord: unit di segmen premium."
+        className="block cursor-help text-xs text-secondary"
       >
-        📊 Di atas rata-rata
+        📊 {formatPrice(diff)}/bulan di atas pasar — {formatPrice(diff * 12)} per tahun.
       </span>
     );
   }
 
-  // Below average (< −20%) — show the real RM gap + sample size.
+  // Below market (< −20%) — efficiency framing + sample size.
   if (dev < -0.2) {
     const diff = Math.round(fairPrice - p);
     return (
-      <span className="block text-xs">
-        <span
-          title={`Rata-rata area ini ${formatPrice(fairPrice)}/bulan.`}
-          className="cursor-help text-secondary"
-        >
-          📊 Di bawah rata-rata pasar
-        </span>
-        {count && area && diff > 0 && (
-          <span className="mt-0.5 block whitespace-nowrap text-[11px] text-success">
-            {formatPrice(diff)} di bawah rata-rata {count} listing di {area}
-          </span>
-        )}
+      <span className="block text-xs text-success">
+        📊 {formatPrice(diff)} lebih efisien dari rata-rata
+        {count && area ? ` ${count} listing di ${area}` : ""}
       </span>
     );
   }
 
-  // Within ±20% — neutral, no extra line.
+  // Within ±20% — neutral.
   return (
-    <span
-      title={`Rata-rata area ini ${formatPrice(fairPrice)}/bulan.`}
-      className="cursor-help whitespace-nowrap text-xs text-secondary"
-    >
-      📊 Sesuai rata-rata
+    <span className="block whitespace-nowrap text-xs text-secondary">
+      📊 Sesuai rata-rata pasar
     </span>
   );
 }

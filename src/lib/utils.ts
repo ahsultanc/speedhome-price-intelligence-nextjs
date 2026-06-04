@@ -9,6 +9,14 @@ export function cn(...inputs: ClassValue[]): string {
 
 const DASH = "—";
 
+/** "Mont Kiara" → "mont-kiara" (matches the scraper's slug format). */
+export function slugifyArea(area: string): string {
+  return (area || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
 /** "RM 2,500" — null/NaN → "—". */
 export function formatPrice(value?: number | null): string {
   if (value === null || value === undefined || Number.isNaN(value)) return DASH;

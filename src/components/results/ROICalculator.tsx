@@ -72,7 +72,7 @@ export default function ROICalculator({ fairPrice }: { fairPrice: number | null 
         className="flex w-full items-center justify-between px-5 py-4 text-left"
       >
         <span className="flex items-center gap-2 font-medium text-primary">
-          <Calculator className="h-4 w-4 text-accent" /> Kalkulator ROI Investasi
+          <Calculator className="h-4 w-4 text-accent" /> Mau tahu ini layak buat investasi?
         </span>
         <ChevronDown className={cn("h-5 w-5 text-secondary transition-transform", open && "rotate-180")} />
       </button>

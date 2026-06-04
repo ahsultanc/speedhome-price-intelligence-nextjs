@@ -20,30 +20,30 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://speedhome-intelligence.vercel.app"),
-  title: {
-    default: "SPEEDHOME Price Intelligence — Pasar Sewa Malaysia",
-    template: "%s · SPEEDHOME Price Intelligence",
-  },
+  metadataBase: new URL("https://speedhome-price-intelligence-nextjs.vercel.app"),
+  title: "SPEEDHOME Price Intelligence — Harga Sewa Wajar Malaysia",
   description:
-    "Temukan rumah yang tepat — bukan hanya harga yang tepat. Data sewa real-time dari SPEEDHOME.com, analisis harga wajar, dan perbandingan area untuk pasar Malaysia.",
+    "Cari tahu harga sewa wajar di 21 area Malaysia. Data real-time dari SPEEDHOME. Gratis, tanpa daftar.",
   keywords: [
-    "sewa malaysia",
-    "harga sewa",
-    "rental price",
-    "property intelligence",
-    "SPEEDHOME",
-    "Mont Kiara",
-    "KLCC",
+    "harga sewa Malaysia",
+    "harga sewa KL",
+    "sewa apartemen Malaysia",
+    "price intelligence properti",
+    "harga wajar sewa",
   ],
   authors: [{ name: "Ahmad Sultan Chaeruddin" }],
   openGraph: {
     title: "SPEEDHOME Price Intelligence",
-    description:
-      "Tahu harga sewa yang wajar — sebelum tanda tangan. Data real-time pasar sewa Malaysia.",
-    type: "website",
-    locale: "id_ID",
+    description: "Sewa rumah itu stressful. Harga wajarnya, tidak.",
+    url: "https://speedhome-price-intelligence-nextjs.vercel.app",
     siteName: "SPEEDHOME Price Intelligence",
+    locale: "id_ID",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SPEEDHOME Price Intelligence",
+    description: "Sewa rumah itu stressful. Harga wajarnya, tidak.",
   },
   robots: { index: true, follow: true },
 };
