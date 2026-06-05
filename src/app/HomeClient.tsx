@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { MapPin, BarChart2 } from "lucide-react";
+import { MapPin, BarChart2, Users } from "lucide-react";
 import HeroSection, { heroContainer, heroItem } from "@/components/home/HeroSection";
 import SearchBar from "@/components/home/SearchBar";
 import TrustSignals from "@/components/home/TrustSignals";
@@ -30,6 +30,7 @@ import CTASection from "@/components/results/CTASection";
 import PreSurveyChecklist from "@/components/listing/PreSurveyChecklist";
 import PostDealChecklist from "@/components/listing/PostDealChecklist";
 import { computeMetrics, filterByRentalType } from "@/lib/utils";
+import { getReferralSource } from "@/lib/utm";
 import type { RentalType, ScrapeResult } from "@/lib/types";
 
 type Status = "idle" | "loading" | "done" | "error";
@@ -45,6 +46,7 @@ export default function HomeClient() {
   const [rental, setRental] = useState<RentalType>("monthly");
   const [lastQuery, setLastQuery] = useState("");
   const [note, setNote] = useState<string | undefined>();
+  const [isReferral, setIsReferral] = useState(false);
   const resultsRef = useRef<HTMLDivElement>(null);
 
   async function search(query: string, strictArg = strict, searchNote?: string) {
@@ -76,15 +78,20 @@ export default function HomeClient() {
 
   const didDeepLink = useRef(false);
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect -- one-time URL deep-link / referral capture on mount */
     if (didDeepLink.current) return;
     didDeepLink.current = true;
     const sp = new URLSearchParams(window.location.search);
+    // Capture referral source into sessionStorage so downstream CTAs are tagged.
+    if (getReferralSource() === "share") {
+      setIsReferral(true);
+    }
     const a = sp.get("area");
     if (a) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time URL deep-link on mount
       if (sp.get("type") === "yearly") setRental("yearly");
       search(a);
     }
+    /* eslint-enable react-hooks/set-state-in-effect */
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -140,6 +147,12 @@ export default function HomeClient() {
       </motion.div>
 
       <div ref={resultsRef} className="mx-auto max-w-5xl px-6 py-12">
+        {isReferral && status === "done" && (
+          <p className="mb-4 flex items-center justify-center gap-1.5 text-center text-sm text-accent">
+            <Users className="h-4 w-4 shrink-0" /> Seseorang membagikan data area ini untuk
+            kamu.
+          </p>
+        )}
         {note && status === "done" && (
           <p className="mb-6 flex items-center gap-1.5 rounded-lg border border-border bg-card px-4 py-2 text-sm text-secondary">
             <MapPin className="h-4 w-4 shrink-0 text-navy" /> {note}
