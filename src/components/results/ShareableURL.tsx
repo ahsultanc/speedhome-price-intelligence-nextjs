@@ -45,7 +45,7 @@ export default function ShareableURL({
         {copied ? <Check className="h-4 w-4 text-success" /> : <Link2 className="h-4 w-4" />}
         {copied
           ? "Link disalin! Bagikan ke siapapun yang butuh data ini."
-          : "🔗 Simpan atau bagikan hasil pencarian ini"}
+          : "Simpan atau bagikan hasil pencarian ini"}
       </button>
 
       {saved.length > 0 && (

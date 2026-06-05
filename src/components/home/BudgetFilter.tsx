@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Wallet } from "lucide-react";
+import { Wallet, CheckCircle2, AlertTriangle, XCircle } from "lucide-react";
 import type { Listing } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
 
@@ -40,9 +40,15 @@ export default function BudgetFilter({ listings }: { listings: Listing[] }) {
           <p className="text-secondary">
             Dengan budget <strong className="text-primary">{formatPrice(n)}</strong>/bulan:
           </p>
-          <p className="text-success">✅ {inBudget} listing cocok buat kamu</p>
-          <p className="text-accent">⚠️ {near} listing sedikit di atas budget</p>
-          <p className="text-secondary">❌ {out} listing di luar budget</p>
+          <p className="flex items-center gap-1.5 text-success">
+            <CheckCircle2 className="h-4 w-4" /> {inBudget} listing cocok buat kamu
+          </p>
+          <p className="flex items-center gap-1.5 text-accent">
+            <AlertTriangle className="h-4 w-4" /> {near} listing sedikit di atas budget
+          </p>
+          <p className="flex items-center gap-1.5 text-secondary">
+            <XCircle className="h-4 w-4" /> {out} listing di luar budget
+          </p>
           {inBudget > 0 && (
             <p className="pt-1 text-primary">
               Berdasarkan budget {formatPrice(n)} kamu, ini yang paling worth it:{" "}

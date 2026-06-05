@@ -17,6 +17,13 @@ type Sort = "best" | "price-asc" | "price-desc" | "sqft-asc" | "sqft-desc";
 const listingIdOf = (l: Listing) =>
   l.link.split("?")[0].split("/").filter(Boolean).pop() || l.link;
 
+// Building/area name only — avoid dumping the full multi-line address into the row.
+const buildingName = (l: Listing) => {
+  const pn = (l.property_name || "").trim();
+  if (pn && pn !== "—" && pn.length > 2) return pn;
+  return (l.address || "").split(/[\n,]/)[0].trim();
+};
+
 function ctaUrl(link: string, stage: UTMStage, listingId: string) {
   const sep = link.includes("?") ? "&" : "?";
   return `${link}${sep}utm_source=price-intelligence&utm_medium=cta&utm_campaign=${stage}&utm_content=${encodeURIComponent(listingId)}`;
@@ -146,7 +153,7 @@ export default function ListingsTable({
       ) : (
         <>
           {/* Desktop table */}
-          <div className="hidden overflow-x-auto rounded-card border border-border bg-card shadow-subtle md:block">
+          <div className="hidden overflow-x-auto rounded-card border border-border bg-card shadow-elev1 md:block">
             <table className="w-full min-w-[920px] text-sm">
               <thead>
                 <tr className="border-b border-border text-left text-secondary">
@@ -169,7 +176,7 @@ export default function ListingsTable({
                     <td className="max-w-[300px] px-4 py-3">
                       <span className="block font-medium text-primary">{l.title}</span>
                       <span className="mt-0.5 block text-xs text-secondary line-clamp-1">
-                        {l.address}
+                        {buildingName(l)}
                       </span>
                       <span className="mt-1.5 block">
                         <ListingCompletenessBadge listing={l} fairPrice={fairOf(l)} />

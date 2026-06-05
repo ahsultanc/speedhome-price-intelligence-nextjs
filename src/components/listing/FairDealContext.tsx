@@ -1,5 +1,8 @@
+import { BarChart2 } from "lucide-react";
 import type { Listing } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
+
+const Icon = () => <BarChart2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-navy" />;
 
 /** DATA, not VERDICT — neutral framing, never red. */
 export default function FairDealContext({
@@ -25,9 +28,9 @@ export default function FairDealContext({
     return (
       <span
         title="Untuk penyewa: ada potensi negosiasi. Untuk landlord: unit di segmen premium."
-        className="block cursor-help text-xs text-secondary"
+        className="flex cursor-help items-start gap-1.5 text-xs text-secondary"
       >
-        📊 {formatPrice(diff)}/bulan di atas pasar — {formatPrice(diff * 12)} per tahun.
+        <Icon /> {formatPrice(diff)}/bulan di atas pasar — {formatPrice(diff * 12)} per tahun.
       </span>
     );
   }
@@ -36,8 +39,9 @@ export default function FairDealContext({
   if (dev < -0.2) {
     const diff = Math.round(fairPrice - p);
     return (
-      <span className="block text-xs text-success">
-        📊 {formatPrice(diff)} lebih efisien dari rata-rata
+      <span className="flex items-start gap-1.5 text-xs text-success">
+        <BarChart2 className="mt-0.5 h-3.5 w-3.5 shrink-0" /> {formatPrice(diff)} lebih efisien
+        dari rata-rata
         {count && area ? ` ${count} listing di ${area}` : ""}
       </span>
     );
@@ -45,8 +49,8 @@ export default function FairDealContext({
 
   // Within ±20% — neutral.
   return (
-    <span className="block whitespace-nowrap text-xs text-secondary">
-      📊 Sesuai rata-rata pasar
+    <span className="flex items-center gap-1.5 whitespace-nowrap text-xs text-secondary">
+      <Icon /> Sesuai rata-rata pasar
     </span>
   );
 }

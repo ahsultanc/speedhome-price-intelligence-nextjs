@@ -17,7 +17,7 @@ export default function SimilarAreas({ area }: { area?: string | null }) {
   if (areas.length === 0) return null;
 
   return (
-    <div className="rounded-card border border-border bg-card p-5 shadow-subtle">
+    <div className="rounded-card border border-border bg-card p-5 shadow-elev1">
       <p className="text-sm text-primary">
         Atau kalau budget lebih fleksibel, area ini worth dipertimbangkan:
       </p>

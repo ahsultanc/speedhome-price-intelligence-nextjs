@@ -1,3 +1,4 @@
+import { Check } from "lucide-react";
 import type { OverallMetrics } from "@/lib/utils";
 import { cn, formatDecimal, formatPrice } from "@/lib/utils";
 
@@ -61,7 +62,7 @@ export default function HeadToHead({
                     w === "a" ? "font-semibold text-success" : "text-primary",
                   )}
                 >
-                  {w === "a" && "✅ "}
+                  {w === "a" && <Check className="mr-1 inline h-3.5 w-3.5 text-success" />}
                   {r.fmt(r.a)}
                 </td>
                 <td
@@ -70,7 +71,7 @@ export default function HeadToHead({
                     w === "b" ? "font-semibold text-success" : "text-primary",
                   )}
                 >
-                  {w === "b" && "✅ "}
+                  {w === "b" && <Check className="mr-1 inline h-3.5 w-3.5 text-success" />}
                   {r.fmt(r.b)}
                 </td>
               </tr>
@@ -78,9 +79,9 @@ export default function HeadToHead({
           })}
         </tbody>
       </table>
-      <p className="px-4 py-2 text-xs text-secondary">
-        ✅ Hijau = lebih murah (better value). Untuk Listings, lebih banyak = supply
-        lebih tinggi.
+      <p className="flex items-center gap-1.5 px-4 py-2 text-xs text-secondary">
+        <Check className="h-3.5 w-3.5 text-success" /> Hijau = lebih murah (better value).
+        Untuk Listings, lebih banyak = supply lebih tinggi.
       </p>
     </div>
   );

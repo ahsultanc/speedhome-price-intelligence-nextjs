@@ -1,3 +1,4 @@
+import { CheckSquare } from "lucide-react";
 import CollapsibleChecklist from "./CollapsibleChecklist";
 
 const ITEMS = [
@@ -13,7 +14,11 @@ const ITEMS = [
 export default function PostDealChecklist() {
   return (
     <CollapsibleChecklist
-      title="✅ Checklist setelah deal"
+      title={
+        <span className="flex items-center gap-1.5">
+          <CheckSquare className="h-4 w-4 text-navy" /> Checklist setelah deal
+        </span>
+      }
       items={ITEMS}
       storageKey="speedhome_dismiss_postdeal"
     />

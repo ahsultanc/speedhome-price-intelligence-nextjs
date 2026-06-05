@@ -1,3 +1,4 @@
+import { Lightbulb } from "lucide-react";
 import type { Listing } from "@/lib/types";
 
 /**
@@ -19,10 +20,10 @@ export default function AvailabilitySignal({
 
   return (
     <span
-      className="whitespace-nowrap text-[11px] text-accent"
+      className="inline-flex items-center gap-1 whitespace-nowrap text-[11px] text-accent"
       title="Listing dengan harga jauh di bawah rata-rata sering sudah tidak tersedia."
     >
-      💡 Harga sangat murah — verifikasi ketersediaan dulu
+      <Lightbulb className="h-3 w-3 text-accent" /> Harga sangat murah — verifikasi ketersediaan dulu
     </span>
   );
 }

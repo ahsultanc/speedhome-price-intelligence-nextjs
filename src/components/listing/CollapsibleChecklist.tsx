@@ -10,7 +10,7 @@ export default function CollapsibleChecklist({
   items,
   storageKey,
 }: {
-  title: string;
+  title: React.ReactNode;
   items: string[];
   storageKey: string;
 }) {

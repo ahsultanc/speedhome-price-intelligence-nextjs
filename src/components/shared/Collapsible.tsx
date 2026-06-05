@@ -9,7 +9,7 @@ export default function Collapsible({
   children,
   defaultOpen = false,
 }: {
-  label: string;
+  label: React.ReactNode;
   children: React.ReactNode;
   defaultOpen?: boolean;
 }) {

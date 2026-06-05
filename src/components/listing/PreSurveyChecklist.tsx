@@ -1,3 +1,4 @@
+import { Search } from "lucide-react";
 import CollapsibleChecklist from "./CollapsibleChecklist";
 
 const ITEMS = [
@@ -15,7 +16,11 @@ const ITEMS = [
 export default function PreSurveyChecklist() {
   return (
     <CollapsibleChecklist
-      title="🔍 Tips survei sebelum sewa"
+      title={
+        <span className="flex items-center gap-1.5">
+          <Search className="h-4 w-4 text-navy" /> Tips survei sebelum sewa
+        </span>
+      }
       items={ITEMS}
       storageKey="speedhome_dismiss_presurvey"
     />

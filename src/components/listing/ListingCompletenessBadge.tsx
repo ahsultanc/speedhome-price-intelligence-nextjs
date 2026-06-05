@@ -1,6 +1,7 @@
 import { calculateCompleteness } from "@/lib/listingCompleteness";
 import type { Listing } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import StatusDot from "@/components/shared/StatusDot";
 
 export default function ListingCompletenessBadge({
   listing,
@@ -31,7 +32,7 @@ export default function ListingCompletenessBadge({
         tone,
       )}
     >
-      {c.emoji} {label}
+      <StatusDot tone={c.tone} /> {label}
     </span>
   );
 }

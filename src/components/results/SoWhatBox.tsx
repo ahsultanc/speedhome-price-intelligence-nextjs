@@ -39,7 +39,7 @@ export default function SoWhatBox({
 
   return (
     <div className="flex items-start gap-3 rounded-card border border-success/20 bg-sage px-5 py-4">
-      <Lightbulb className="mt-0.5 h-5 w-5 shrink-0 text-success" />
+      <Lightbulb className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
       <p className="text-sm leading-relaxed text-primary">
         {overpayment > 0 ? (
           <>

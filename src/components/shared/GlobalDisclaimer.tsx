@@ -14,7 +14,7 @@ export default function GlobalDisclaimer() {
       <div className="space-y-2">
         <p className="text-primary">
           Kami tidak dibayar landlord. Kami tidak dibayar SPEEDHOME. Data ini untuk
-          kamu — pencari sewa.
+          kamu, pencari sewa.
         </p>
         <p>
           <strong className="text-primary">Listing Completeness</strong> mengukur info

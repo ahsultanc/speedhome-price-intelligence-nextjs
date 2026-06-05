@@ -46,7 +46,7 @@ export default function NegotiationToolkit({
         <div className="space-y-3 border-t border-border p-3 text-xs">
           <div>
             <p className="flex items-center gap-1.5 font-medium text-primary">
-              <Home className="h-3.5 w-3.5" /> Via SPEEDHOME (direkomendasikan)
+              <Home className="h-3.5 w-3.5 text-navy" /> Via SPEEDHOME (direkomendasikan)
             </p>
             <p className="text-secondary">Semua komunikasi tercatat dan terlindungi</p>
             <a
@@ -60,7 +60,7 @@ export default function NegotiationToolkit({
           </div>
           <div>
             <p className="flex items-center gap-1.5 font-medium text-primary">
-              <MessageSquare className="h-3.5 w-3.5" /> Script negosiasi
+              <MessageSquare className="h-3.5 w-3.5 text-navy" /> Script negosiasi
             </p>
             <p className="text-secondary">Gunakan di channel manapun</p>
             <textarea
@@ -79,7 +79,7 @@ export default function NegotiationToolkit({
           </div>
           <div>
             <p className="flex items-center gap-1.5 font-medium text-primary">
-              <BarChart3 className="h-3.5 w-3.5" /> Bagikan data pasar ke landlord
+              <BarChart3 className="h-3.5 w-3.5 text-navy" /> Bagikan data pasar ke landlord
             </p>
             <p className="text-secondary">Tunjukkan sebagai referensi objektif</p>
             <button

@@ -32,6 +32,9 @@ const config: Config = {
       boxShadow: {
         subtle: "0 1px 3px rgba(0,0,0,0.08)",
         card: "0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)",
+        // Elevation system — differentiate card importance.
+        elev1: "0 1px 3px rgba(0,0,0,0.06)", // ordinary cards
+        elev2: "0 4px 12px rgba(0,0,0,0.08)", // hero / important cards
       },
     },
   },

@@ -27,8 +27,9 @@ export default function CTASection({ area }: { area: string }) {
         rel="noopener noreferrer"
         className="mt-6 inline-block rounded-lg bg-accent px-7 py-3 font-medium text-primary transition-colors hover:bg-white"
       >
-        Cari Unit di {area} di SPEEDHOME →
+        Cari di SPEEDHOME →
       </a>
+      <p className="mt-2 text-xs text-white/60">Listing {area} tersedia sekarang</p>
       <div className="mt-4">
         <Link href="/compare" className="text-sm text-white/70 underline transition-colors hover:text-white">
           Atau bandingkan dengan area lain →

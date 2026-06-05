@@ -36,10 +36,9 @@ export default function CompareView({
       className="space-y-8"
     >
       {isDemo && (
-        <div className="rounded-card border border-accent/30 bg-[#FEF3C7] px-4 py-3 text-sm text-primary">
-          ⚠️ Menampilkan data sampel — scraping live sedang tidak tersedia. Data
-          akurat per {A?.meta?.scraped_at ?? B?.meta?.scraped_at ?? "—"} MYT.
-        </div>
+        <p className="text-center text-xs italic text-gray-400">
+          Data sampel per 04-06-2026 · Live scraping tidak tersedia di production
+        </p>
       )}
 
       <section className="space-y-3">

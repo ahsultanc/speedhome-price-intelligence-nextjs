@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { MapPin, BarChart2 } from "lucide-react";
 import HeroSection, { heroContainer, heroItem } from "@/components/home/HeroSection";
 import SearchBar from "@/components/home/SearchBar";
 import TrustSignals from "@/components/home/TrustSignals";
@@ -33,6 +34,9 @@ import { computeMetrics, filterByRentalType } from "@/lib/utils";
 import type { RentalType, ScrapeResult } from "@/lib/types";
 
 type Status = "idle" | "loading" | "done" | "error";
+
+// Fixed demo snapshot date for the subtle production disclaimer.
+const DEMO_SNAPSHOT_DATE = "04-06-2026";
 
 export default function HomeClient() {
   const [strict, setStrict] = useState(true);
@@ -138,8 +142,8 @@ export default function HomeClient() {
 
       <div ref={resultsRef} className="mx-auto max-w-5xl px-6 py-12">
         {note && status === "done" && (
-          <p className="mb-6 rounded-lg border border-border bg-card px-4 py-2 text-sm text-secondary">
-            📍 {note}
+          <p className="mb-6 flex items-center gap-1.5 rounded-lg border border-border bg-card px-4 py-2 text-sm text-secondary">
+            <MapPin className="h-4 w-4 shrink-0 text-navy" /> {note}
           </p>
         )}
 
@@ -165,13 +169,13 @@ export default function HomeClient() {
             className="space-y-8"
           >
             <div className="flex flex-col items-center gap-3">
-              {result?.is_demo && (
-                <div className="rounded-card border border-accent/30 bg-[#FEF3C7] px-4 py-2 text-xs font-medium text-primary">
-                  ⚠️ Menampilkan data sampel — scraping live sedang tidak tersedia.
-                  Data akurat per {result?.meta?.scraped_at ?? "—"} MYT.
-                </div>
-              )}
               <Timestamp time={result?.meta?.scraped_at} count={inAreaCount} />
+              {result?.is_demo && (
+                <p className="text-center text-xs italic text-gray-400">
+                  Data sampel per {DEMO_SNAPSHOT_DATE} · Live scraping tidak tersedia di
+                  production
+                </p>
+              )}
               <SupplyIndicator count={inAreaCount} />
             </div>
 
@@ -182,7 +186,9 @@ export default function HomeClient() {
             </p>
 
             <SoWhatBox listings={monthlyListings} summary={summaryMonthly} area={area} />
-            <MetricCards metrics={metrics} area={area} heroUnit={heroUnit} heroFair={heroFair} />
+            <div className="pt-4">
+              <MetricCards metrics={metrics} area={area} heroUnit={heroUnit} heroFair={heroFair} />
+            </div>
             <p className="text-center text-sm text-secondary">
               Ini harga wajarnya berdasarkan {inAreaCount.toLocaleString("en-MY")} listing
               aktif hari ini. Sekarang lihat listing mana yang worth it.
@@ -209,7 +215,13 @@ export default function HomeClient() {
 
             <ROICalculator fairPrice={heroFair} />
 
-            <Collapsible label="📊 Lihat visualisasi harga →">
+            <Collapsible
+              label={
+                <span className="flex items-center gap-1.5">
+                  <BarChart2 className="h-4 w-4 text-navy" /> Lihat visualisasi harga →
+                </span>
+              }
+            >
               <PriceChart summary={summary} />
             </Collapsible>
 

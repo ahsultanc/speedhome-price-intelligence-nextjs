@@ -109,7 +109,7 @@ export default function MetricCards({
   ];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
       <div className="grid grid-cols-3 gap-4">
         {cards.map((c) => (
           <motion.div
@@ -117,7 +117,7 @@ export default function MetricCards({
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: c.delay }}
-            className="rounded-card border border-border bg-card p-5 shadow-subtle"
+            className="rounded-card border border-border bg-card p-5 shadow-elev1"
           >
             <p className="text-xs font-medium uppercase tracking-wider text-secondary">
               {c.label}
@@ -135,7 +135,7 @@ export default function MetricCards({
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.5 }}
-        className="rounded-card border-2 border-accent bg-card p-6 shadow-subtle"
+        className="rounded-card border-[1.5px] border-accent bg-card p-8 shadow-elev2"
       >
         <p className="text-xs font-medium uppercase tracking-wider text-accent">
           Harga wajar{heroUnit ? ` ${heroUnit}` : ""} di {area}

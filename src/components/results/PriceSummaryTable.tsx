@@ -46,7 +46,7 @@ export default function PriceSummaryTable({ summary }: { summary: SummaryRow[] }
     );
   }
   return (
-    <div className="overflow-x-auto rounded-card border border-border bg-card shadow-subtle">
+    <div className="overflow-x-auto rounded-card border border-border bg-card shadow-elev1">
       <table className="w-full min-w-[760px] text-sm">
         <thead>
           <tr className="border-b border-border text-left">

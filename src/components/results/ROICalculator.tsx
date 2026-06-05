@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { ChevronDown, Calculator } from "lucide-react";
 import { calculateROI } from "@/lib/roiCalculator";
 import { cn, formatPrice, formatPercent } from "@/lib/utils";
+import StatusDot from "@/components/shared/StatusDot";
 
 function Field({
   label,
@@ -66,7 +67,7 @@ export default function ROICalculator({ fairPrice }: { fairPrice: number | null 
   const showResults = hargaBeli > 0 && num(sewa) > 0;
 
   return (
-    <div className="rounded-card border border-border bg-card shadow-subtle">
+    <div className="rounded-card border border-border bg-card shadow-elev1">
       <button
         onClick={() => setOpen((v) => !v)}
         className="flex w-full items-center justify-between px-5 py-4 text-left"
@@ -119,7 +120,7 @@ export default function ROICalculator({ fairPrice }: { fairPrice: number | null 
                         : "border-border bg-background text-secondary",
                   )}
                 >
-                  {r.benchmark.emoji} {r.benchmark.label}
+                  <StatusDot tone={r.benchmark.tone} className="mr-1.5" /> {r.benchmark.label}
                 </div>
               )}
             </div>
