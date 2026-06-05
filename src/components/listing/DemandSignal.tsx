@@ -74,7 +74,7 @@ export default function DemandSignal({
 
   if (state === "marked") {
     return (
-      <div className="mt-2 rounded-lg bg-sage px-3 py-2 text-xs text-primary">
+      <div className="mt-2 rounded-lg border border-accent bg-background px-3 py-2 text-xs text-primary">
         Minat kamu tercatat. Kamu dan {Math.max(count - 1, 0)} orang lainnya tertarik
         di harga {fmt(fairPrice)}/bulan.
         <span className="mt-0.5 block italic text-secondary">
@@ -85,7 +85,7 @@ export default function DemandSignal({
   }
 
   return (
-    <div className="mt-2 rounded-lg bg-[#FEF3C7] px-3 py-2 text-xs text-primary">
+    <div className="mt-2 rounded-lg border border-border bg-transparent px-3 py-2 text-xs text-primary">
       {state === "loading" ? (
         <span>Mencatat minat kamu...</span>
       ) : (
