@@ -26,10 +26,10 @@ export default function HeroSection() {
       <div className="relative mx-auto max-w-3xl px-6 pt-16 pb-8 text-center sm:pt-24">
         <h1 className="font-display text-[40px] font-bold leading-[1.05] text-primary sm:text-[64px]">
           <motion.span variants={heroItem} className="block">
-            Sewa rumah itu stressful.
+            Stress soal harga sewa?
           </motion.span>
           <motion.span variants={heroItem} className="block italic text-accent">
-            Harga wajarnya, tidak.
+            Kami kasih tahu harga wajarnya.
           </motion.span>
         </h1>
         <motion.p variants={heroItem} className="mx-auto mt-6 max-w-xl text-lg text-secondary">

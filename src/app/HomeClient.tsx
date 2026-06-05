@@ -24,7 +24,6 @@ import RentalTypeTabs from "@/components/results/RentalTypeTabs";
 import PriceChart from "@/components/results/PriceChart";
 import ListingsTable from "@/components/results/ListingsTable";
 import ExcelExport from "@/components/results/ExcelExport";
-import ROICalculator from "@/components/results/ROICalculator";
 import ShareableURL from "@/components/results/ShareableURL";
 import SimilarAreas from "@/components/results/SimilarAreas";
 import CTASection from "@/components/results/CTASection";
@@ -194,7 +193,7 @@ export default function HomeClient() {
               aktif hari ini. Sekarang lihat listing mana yang worth it.
             </p>
 
-            <BudgetFilter listings={shown} />
+            <BudgetFilter key={area} listings={shown} fairPrice={heroFair} area={area} />
 
             <div className="flex flex-wrap items-center justify-between gap-3">
               <RentalTypeTabs value={rental} onChange={setRental} hasYearly={hasYearly} />
@@ -212,8 +211,6 @@ export default function HomeClient() {
               </h2>
               <PriceSummaryTable summary={summary} />
             </section>
-
-            <ROICalculator fairPrice={heroFair} />
 
             <Collapsible
               label={
