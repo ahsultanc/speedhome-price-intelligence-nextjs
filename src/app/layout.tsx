@@ -21,29 +21,29 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://speedhome-price-intelligence-nextjs.vercel.app"),
-  title: "SPEEDHOME Price Intelligence — Harga Sewa Wajar Malaysia",
+  title: "Sewajar — Harga Sewa Wajar",
   description:
-    "Cari tahu harga sewa wajar di 21 area Malaysia. Data real-time dari SPEEDHOME. Gratis, tanpa daftar.",
+    "Stress soal harga sewa? Sewajar kasih tahu harga wajarnya. Data real-time dari SPEEDHOME. Gratis, tanpa daftar. by Jendela Group.",
   keywords: [
     "harga sewa Malaysia",
     "harga sewa KL",
     "sewa apartemen Malaysia",
-    "price intelligence properti",
     "harga wajar sewa",
+    "Sewajar",
   ],
   authors: [{ name: "Ahmad Sultan Chaeruddin" }],
   openGraph: {
-    title: "SPEEDHOME Price Intelligence",
-    description: "Sewa rumah itu stressful. Harga wajarnya, tidak.",
+    title: "Sewajar — Harga Sewa Wajar",
+    description: "Stress soal harga sewa? Kami kasih tahu harga wajarnya.",
     url: "https://speedhome-price-intelligence-nextjs.vercel.app",
-    siteName: "SPEEDHOME Price Intelligence",
+    siteName: "Sewajar",
     locale: "id_ID",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "SPEEDHOME Price Intelligence",
-    description: "Sewa rumah itu stressful. Harga wajarnya, tidak.",
+    title: "Sewajar",
+    description: "Stress soal harga sewa? Kami kasih tahu harga wajarnya.",
   },
   alternates: { canonical: "/" },
   robots: { index: true, follow: true },
@@ -52,9 +52,9 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "SPEEDHOME Price Intelligence",
+  name: "Sewajar",
   description:
-    "Cari tahu harga sewa wajar di area Malaysia. Data real-time dari SPEEDHOME.",
+    "Harga sewa wajar untuk area di Malaysia. Data real-time dari SPEEDHOME.",
   applicationCategory: "UtilityApplication",
   operatingSystem: "Web",
   offers: {

@@ -19,8 +19,8 @@ export async function generateMetadata({
   const areaName = toAreaName(area);
 
   return {
-    title: `Harga Sewa ${areaName} 2026 — SPEEDHOME Price Intelligence`,
-    description: `Cari tahu harga sewa wajar di ${areaName}. Data real-time dari SPEEDHOME. Gratis, tanpa daftar.`,
+    title: `Harga Sewa ${areaName} — Sewajar`,
+    description: `Cek harga sewa wajar di ${areaName}. Data real-time dari SPEEDHOME. Gratis, tanpa daftar.`,
     alternates: { canonical: `/?area=${area}` },
     openGraph: {
       title: `Harga Sewa ${areaName} 2026`,
@@ -47,7 +47,7 @@ export default async function Page({
         description: `Data harga sewa properti di ${areaName} Malaysia, termasuk harga wajar dan analisis per tipe unit.`,
         creator: {
           "@type": "Organization",
-          name: "SPEEDHOME Price Intelligence",
+          name: "Sewajar by Jendela Group",
         },
         inLanguage: "id-ID",
       }

@@ -259,7 +259,7 @@ export default function HomeClient() {
             <FeedbackWidget />
 
             <p className="pt-2 text-center text-[10px] uppercase tracking-[0.2em] text-border">
-              SPEEDHOME Price Intelligence
+              SEWAJAR
             </p>
           </motion.div>
         )}

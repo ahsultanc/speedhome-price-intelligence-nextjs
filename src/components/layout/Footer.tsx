@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="mt-auto border-t border-border">
       <div className="mx-auto max-w-6xl px-6 py-10">
         <p className="font-display text-lg text-primary">
-          SPEEDHOME Price Intelligence
+          Sewajar by Jendela Group
         </p>
         <p className="mt-2 max-w-lg text-sm text-secondary">
           Data dari SPEEDHOME.com · Dibuat karena kami juga pernah bingung dengan

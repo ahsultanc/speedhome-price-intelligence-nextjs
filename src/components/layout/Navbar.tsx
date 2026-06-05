@@ -28,10 +28,10 @@ export default function Navbar() {
           </span>
           <span className="leading-tight">
             <span className="block font-display text-xl font-semibold tracking-tight text-primary">
-              Price Intelligence
+              Sewajar
             </span>
-            <span className="block text-[10px] font-medium uppercase tracking-[0.18em] text-accent">
-              Malaysia
+            <span className="block text-[11px] font-medium text-[#9B9589]">
+              by Jendela Group
             </span>
           </span>
         </Link>
