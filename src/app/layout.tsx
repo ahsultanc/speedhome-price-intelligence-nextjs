@@ -45,7 +45,24 @@ export const metadata: Metadata = {
     title: "SPEEDHOME Price Intelligence",
     description: "Sewa rumah itu stressful. Harga wajarnya, tidak.",
   },
+  alternates: { canonical: "/" },
   robots: { index: true, follow: true },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "SPEEDHOME Price Intelligence",
+  description:
+    "Cari tahu harga sewa wajar di area Malaysia. Data real-time dari SPEEDHOME.",
+  applicationCategory: "UtilityApplication",
+  operatingSystem: "Web",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "MYR",
+  },
+  inLanguage: "id-ID",
 };
 
 export default function RootLayout({
@@ -57,6 +74,10 @@ export default function RootLayout({
       className={`${cormorant.variable} ${dmSans.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-background font-sans text-primary">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <Navbar />
         {children}
         <Footer />
