@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Building2, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const tabs = [
@@ -20,19 +20,14 @@ export default function Navbar() {
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link
           href="/"
-          className="flex items-center gap-2.5"
+          className="leading-none"
           onClick={() => setOpen(false)}
         >
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-navy text-background">
-            <Building2 className="h-5 w-5" />
+          <span className="block font-display text-2xl font-semibold tracking-tight text-navy">
+            Sewajar
           </span>
-          <span className="leading-tight">
-            <span className="block font-display text-xl font-semibold tracking-tight text-primary">
-              Sewajar
-            </span>
-            <span className="block text-[11px] font-medium text-[#9B9589]">
-              by Jendela Group
-            </span>
+          <span className="mt-0.5 block text-[11px] font-medium text-[#9B9589]">
+            by Jendela Group
           </span>
         </Link>
 
