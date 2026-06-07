@@ -27,6 +27,42 @@ const buildingName = (l: Listing) => {
   return (l.address || "").split(/[\n,]/)[0].trim();
 };
 
+// Honest amenity tags pulled from the listing description. Defensive: a tag only
+// shows when its keyword is actually present, so two listings with otherwise
+// identical fields but different descriptions read differently — and we never
+// invent an attribute the landlord didn't write.
+const AMENITY_PATTERNS: { re: RegExp; label: string }[] = [
+  { re: /zero deposit/i, label: "Zero Deposit" },
+  { re: /car ?park|parking/i, label: "Parking" },
+  { re: /\b(lrt|mrt)\b/i, label: "Near LRT/MRT" },
+  { re: /pet[- ]?friendly|pets?\s+allowed/i, label: "Pet Friendly" },
+  { re: /renovat/i, label: "Renovated" },
+];
+
+const amenityTags = (description?: string): string[] => {
+  if (!description) return [];
+  return AMENITY_PATTERNS.filter((p) => p.re.test(description))
+    .map((p) => p.label)
+    .slice(0, 3);
+};
+
+function AmenityTags({ description }: { description?: string }) {
+  const tags = amenityTags(description);
+  if (!tags.length) return null;
+  return (
+    <div className="mt-1.5 flex flex-wrap gap-1">
+      {tags.map((t) => (
+        <span
+          key={t}
+          className="rounded-full border border-border bg-background px-2 py-0.5 text-[11px] text-secondary"
+        >
+          {t}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function ctaUrl(link: string, stage: UTMStage, listingId: string) {
   const sep = link.includes("?") ? "&" : "?";
   return `${link}${sep}utm_source=price-intelligence&utm_medium=cta&utm_campaign=${stage}&utm_content=${encodeURIComponent(listingId)}`;
@@ -179,6 +215,7 @@ export default function ListingsTable({
                       <span className="mt-0.5 block text-xs text-secondary line-clamp-1">
                         {buildingName(l)}
                       </span>
+                      <AmenityTags description={l.description} />
                       <span className="mt-1.5 block">
                         <ListingCompletenessBadge listing={l} fairPrice={fairOf(l)} />
                       </span>
@@ -237,6 +274,7 @@ export default function ListingsTable({
                   <span>{l.room_type}</span>
                   <span>{formatSqft(l.sqft)}</span>
                 </div>
+                <AmenityTags description={l.description} />
                 <div className="mt-1">
                   <FairDealContext listing={l} fairPrice={fairOf(l)} count={listings.length} area={areaName} />
                 </div>
