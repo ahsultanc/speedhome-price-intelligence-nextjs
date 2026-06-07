@@ -3,8 +3,8 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
-import type { Listing, SummaryRow } from "@/lib/types";
-import { formatPrice, formatSqft, getGoodDealThreshold, slugifyArea } from "@/lib/utils";
+import type { Listing } from "@/lib/types";
+import { formatPrice, formatSqft, slugifyArea } from "@/lib/utils";
 import type { UTMStage } from "@/lib/utm";
 import ListingCompletenessBadge from "@/components/listing/ListingCompletenessBadge";
 import FairDealContext from "@/components/listing/FairDealContext";
@@ -34,13 +34,13 @@ function ctaUrl(link: string, stage: UTMStage, listingId: string) {
 
 export default function ListingsTable({
   listings,
-  summary,
+  fairByType,
   count,
   area,
   unitType,
 }: {
   listings: Listing[];
-  summary: SummaryRow[];
+  fairByType: Record<string, number | null>;
   count?: number;
   area?: string;
   unitType?: string | null;
@@ -50,7 +50,7 @@ export default function ListingsTable({
   const [sort, setSort] = useState<Sort>("closest");
   const [expanded, setExpanded] = useState(false);
 
-  const fairOf = (l: Listing) => getGoodDealThreshold(summary, l.unit_type);
+  const fairOf = (l: Listing) => fairByType[l.unit_type] ?? null;
   const isAbove = (l: Listing) => {
     const t = fairOf(l);
     return t != null && typeof l.monthly_price === "number" && l.monthly_price > t * 1.2;
@@ -90,7 +90,7 @@ export default function ListingsTable({
     if (sort === "sqft-desc") r.sort((a, b) => n(b.sqft, -1) - n(a.sqft, -1));
     return r;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [listings, sort, summary]);
+  }, [listings, sort, fairByType]);
 
   const visibleRows = expanded ? rows : rows.slice(0, LIMIT);
   const hiddenCount = rows.length - LIMIT;

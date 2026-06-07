@@ -14,7 +14,7 @@ const COLUMNS: { key: keyof SummaryRow; label: string; kind: Kind; tip?: string 
     key: "Fair Price (RM)",
     label: "Fair Price",
     kind: "price",
-    tip: "Trimmed mean: buang 10% data termurah & termahal, lalu rata-rata. Mengurangi pengaruh outlier.",
+    tip: "Median untuk area dengan sedikit listing; trimmed mean 10% untuk 10+ listing. Keduanya tahan terhadap harga ekstrem.",
   },
   { key: "Min (RM)", label: "Min", kind: "price" },
   { key: "Max (RM)", label: "Max", kind: "price" },
@@ -40,9 +40,11 @@ function render(row: SummaryRow, key: keyof SummaryRow, kind: Kind) {
 export default function PriceSummaryTable({
   summary,
   highlight,
+  fairByType,
 }: {
   summary: SummaryRow[];
   highlight?: string | null;
+  fairByType?: Record<string, number | null>;
 }) {
   if (!summary.length) {
     return (
@@ -85,14 +87,24 @@ export default function PriceSummaryTable({
                 isSelected && "bg-accent/10 ring-1 ring-inset ring-accent/40",
               )}
             >
-              {COLUMNS.map((c) => (
-                <td
-                  key={String(c.key)}
-                  className="whitespace-nowrap px-4 py-3 tabular-nums text-primary"
-                >
-                  {render(row, c.key, c.kind)}
-                </td>
-              ))}
+              {COLUMNS.map((c) => {
+                // Fair Price comes from the runtime TS map (Option B), the same
+                // single source as the headline — not the pre-computed column.
+                const fairOverride =
+                  c.key === "Fair Price (RM)" && fairByType
+                    ? fairByType[String(row["Unit Type"])] ?? null
+                    : undefined;
+                return (
+                  <td
+                    key={String(c.key)}
+                    className="whitespace-nowrap px-4 py-3 tabular-nums text-primary"
+                  >
+                    {fairOverride !== undefined
+                      ? formatPrice(fairOverride)
+                      : render(row, c.key, c.kind)}
+                  </td>
+                );
+              })}
             </tr>
             );
           })}

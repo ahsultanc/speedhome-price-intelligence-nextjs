@@ -3,7 +3,6 @@
 import { Download } from "lucide-react";
 import * as XLSX from "xlsx";
 import type { Listing, SummaryRow } from "@/lib/types";
-import { getGoodDealThreshold } from "@/lib/utils";
 import { calculateCompleteness } from "@/lib/listingCompleteness";
 
 function fairDealStatus(price: number | null, fair: number | null): string {
@@ -18,21 +17,32 @@ export default function ExcelExport({
   area,
   summary,
   listings,
+  fairByType,
   scrapedAt,
 }: {
   area: string;
   summary: SummaryRow[];
   listings: Listing[];
+  fairByType?: Record<string, number | null>;
   scrapedAt?: string | null;
 }) {
+  const fairOf = (unitType: string): number | null =>
+    fairByType?.[unitType] ?? null;
   function download() {
     const wb = XLSX.utils.book_new();
     const stamp = `${scrapedAt ?? ""} MYT`.trim();
     const brand = `Dibuat dengan Sewajar by Jendela Group · speedhome-price-intelligence-nextjs.vercel.app · ${stamp}`;
 
-    // Summary sheet
+    // Summary sheet — Fair Price overridden with the runtime TS value (Option B)
+    // so the export matches what the app shows.
     const summaryRows: Record<string, unknown>[] = summary.length
-      ? summary.map((r) => ({ ...r }) as Record<string, unknown>)
+      ? summary.map(
+          (r) =>
+            ({
+              ...r,
+              "Fair Price (RM)": fairOf(String(r["Unit Type"])),
+            }) as Record<string, unknown>,
+        )
       : [{ Info: "No data" }];
     summaryRows.push({});
     summaryRows.push({ "Unit Type": brand });
@@ -40,7 +50,7 @@ export default function ExcelExport({
 
     // Listings sheet (with completeness + fair-deal)
     const listingRows: Record<string, unknown>[] = listings.map((l) => {
-      const fair = getGoodDealThreshold(summary, l.unit_type);
+      const fair = fairOf(l.unit_type);
       const c = calculateCompleteness(l, fair);
       return {
         Title: l.title,

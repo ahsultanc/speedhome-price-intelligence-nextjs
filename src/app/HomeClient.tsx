@@ -29,7 +29,12 @@ import SimilarAreas from "@/components/results/SimilarAreas";
 import CTASection from "@/components/results/CTASection";
 import PreSurveyChecklist from "@/components/listing/PreSurveyChecklist";
 import PostDealChecklist from "@/components/listing/PostDealChecklist";
-import { computeMetrics, defaultUnitType, filterByRentalType } from "@/lib/utils";
+import {
+  computeMetrics,
+  defaultUnitType,
+  fairPriceByUnitType,
+  filterByRentalType,
+} from "@/lib/utils";
 import { getReferralSource } from "@/lib/utm";
 import type { RentalType, ScrapeResult } from "@/lib/types";
 
@@ -154,7 +159,12 @@ export default function HomeClient() {
     selectedUnitType && unitTypes.includes(selectedUnitType)
       ? selectedUnitType
       : fallbackUnit;
-  const selectedRow = summary.find((r) => r["Unit Type"] === selectedUnit);
+
+  // Fair Price is computed in TS at runtime from the raw listings (Option B:
+  // median for small samples, 10% trimmed mean once n >= 10). This map is the
+  // single source the headline, summary table, listing sort and negotiation
+  // thresholds all read from — the pre-computed Python "Fair Price" is ignored.
+  const fairByType = fairPriceByUnitType(shown);
 
   // Everything below the headline is scoped to the selected unit type so the
   // Fair Price, the stat cards, and the listings all describe the same thing.
@@ -163,7 +173,7 @@ export default function HomeClient() {
     : shown;
   const metrics = computeMetrics(typeListings);
   const heroUnit = selectedUnit ?? undefined;
-  const heroFair = selectedRow?.["Fair Price (RM)"] ?? metrics.fairPrice;
+  const heroFair = (selectedUnit ? fairByType[selectedUnit] : null) ?? metrics.fairPrice;
 
   return (
     <main className="flex-1">
@@ -281,6 +291,7 @@ export default function HomeClient() {
                 area={area}
                 summary={summary}
                 listings={shown}
+                fairByType={fairByType}
                 scrapedAt={result?.meta?.scraped_at}
               />
             </div>
@@ -289,7 +300,11 @@ export default function HomeClient() {
               <h2 className="font-display text-2xl font-semibold text-primary">
                 Price Summary by Unit Type
               </h2>
-              <PriceSummaryTable summary={summary} highlight={selectedUnit} />
+              <PriceSummaryTable
+                summary={summary}
+                highlight={selectedUnit}
+                fairByType={fairByType}
+              />
             </section>
 
             <Collapsible
@@ -310,7 +325,7 @@ export default function HomeClient() {
                 </h2>
                 <ListingsTable
                   listings={typeListings}
-                  summary={summary}
+                  fairByType={fairByType}
                   count={inAreaCount}
                   area={area}
                   unitType={selectedUnit}

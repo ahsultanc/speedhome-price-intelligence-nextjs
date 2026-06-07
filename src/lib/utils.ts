@@ -104,6 +104,44 @@ export function trimmedMean(values: number[], trim = 0.1): number | null {
   return mean(t);
 }
 
+/**
+ * Fair Price (Option B) — the single source of truth for "harga wajar".
+ *
+ * Small samples use the MEDIAN, which is immune to a single extreme listing.
+ * Once there are enough listings for trimming to actually remove something
+ * (n >= 10, where Math.floor(n * 0.1) >= 1) we switch to a 10% trimmed mean.
+ * The two regimes join at n = 10. Below 10 a trimmed mean would collapse to the
+ * plain mean (k = 0) and get dragged by outliers — exactly what we avoid here.
+ */
+export function fairPrice(values: number[]): number | null {
+  const nums = positives(values).sort((a, b) => a - b);
+  const n = nums.length;
+  if (!n) return null;
+  if (n < 10) return median(nums);
+  const k = Math.floor(n * 0.1);
+  return mean(nums.slice(k, n - k));
+}
+
+/**
+ * Fair Price per unit type, computed at runtime from raw monthly prices. This
+ * is the canonical per-type Fair Price the whole results view reads from, so it
+ * stays consistent across the headline, the summary table, the listing sort,
+ * and the negotiation thresholds.
+ */
+export function fairPriceByUnitType(
+  listings: Listing[],
+): Record<string, number | null> {
+  const groups: Record<string, number[]> = {};
+  for (const l of listings) {
+    if (typeof l.monthly_price === "number" && l.monthly_price > 0) {
+      (groups[l.unit_type] ??= []).push(l.monthly_price);
+    }
+  }
+  const out: Record<string, number | null> = {};
+  for (const type of Object.keys(groups)) out[type] = fairPrice(groups[type]);
+  return out;
+}
+
 export interface OverallMetrics {
   count: number;
   avg: number | null;
@@ -129,7 +167,7 @@ export function computeMetrics(listings: Listing[]): OverallMetrics {
     count: listings.length,
     avg: mean(prices),
     median: median(prices),
-    fairPrice: trimmedMean(prices),
+    fairPrice: fairPrice(prices),
     perSqft: mean(perSqftVals),
     min: prices.length ? Math.min(...prices) : null,
     max: prices.length ? Math.max(...prices) : null,
