@@ -23,6 +23,14 @@ export default function HeroSection() {
         className="pointer-events-none absolute inset-0 opacity-20"
         style={{ backgroundImage: PATTERN, backgroundSize: "40px 40px" }}
       />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage:
+            "radial-gradient(48% 52% at 20% 22%, rgba(201,169,110,0.17) 0%, rgba(201,169,110,0) 60%), radial-gradient(48% 55% at 84% 80%, rgba(27,42,74,0.10) 0%, rgba(27,42,74,0) 60%)",
+        }}
+      />
       <div className="relative mx-auto max-w-3xl px-6 pt-16 pb-8 text-center sm:pt-24">
         <h1 className="font-display text-[40px] font-bold leading-[1.05] text-primary sm:text-[64px]">
           <motion.span variants={heroItem} className="block">
