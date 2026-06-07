@@ -69,8 +69,8 @@ export default function PriceChart({ summary }: { summary: SummaryRow[] }) {
             <YAxis stroke="#6B7280" fontSize={12} tickLine={false} axisLine={false} tickFormatter={kAxis} />
             <Tooltip formatter={(v) => rm(v as number)} contentStyle={tooltipStyle} cursor={{ fill: "#1C1C1E08" }} />
             <Legend />
-            <Bar dataKey="Min" fill="#4A7C59" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="Max" fill="#C0392B" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="Min" fill="#1B2A4A" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="Max" fill="#C9A96E" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       )}

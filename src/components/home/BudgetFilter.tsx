@@ -39,14 +39,14 @@ export default function BudgetFilter({
           bg: "#F0F5F1",
           fg: "#3B6D11",
           Icon: CheckCircle2,
-          msg: "Sehat dan sustainable, di bawah panduan umum 30%",
+          msg: "Sehat dan aman jangka panjang, di bawah panduan umum 30%",
         }
       : ratio <= 40
         ? {
             bg: "#FDF6E8",
             fg: "#854F0B",
             Icon: AlertTriangle,
-            msg: "Agak ketat, tapi masih manageable",
+            msg: "Agak ketat, tapi masih terkendali",
           }
         : {
             bg: "#FBEFEF",
@@ -144,7 +144,7 @@ export default function BudgetFilter({
                 Sisa untuk kebutuhan lain
               </p>
               <p className="mt-1 font-medium tabular-nums text-primary">
-                {rm(remaining)}/bulan
+                {remaining < 0 ? `kurang ${rm(-remaining)}/bulan` : `${rm(remaining)}/bulan`}
               </p>
             </div>
             <div

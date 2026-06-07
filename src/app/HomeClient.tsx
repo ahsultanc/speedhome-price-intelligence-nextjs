@@ -282,8 +282,10 @@ export default function HomeClient() {
 
             <SoWhatBox listings={monthlyListings} summary={summaryMonthly} area={area} />
             <p className="text-center text-sm text-secondary">
-              Ini harga wajarnya berdasarkan {inAreaCount.toLocaleString("en-MY")} listing
-              aktif hari ini. Sekarang lihat listing mana yang worth it.
+              Ini harga wajar{selectedUnit ? ` ${selectedUnit}` : ""} berdasarkan{" "}
+              {typeListings.length.toLocaleString("en-MY")} listing
+              {selectedUnit ? ` ${selectedUnit}` : ""} aktif hari ini. Sekarang lihat
+              listing mana yang worth it.
             </p>
 
             <div className="flex flex-wrap items-center justify-between gap-3">
@@ -327,7 +329,6 @@ export default function HomeClient() {
                 <ListingsTable
                   listings={typeListings}
                   fairByType={fairByType}
-                  count={inAreaCount}
                   area={area}
                   unitType={selectedUnit}
                 />

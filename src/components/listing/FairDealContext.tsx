@@ -40,7 +40,7 @@ export default function FairDealContext({
     const diff = Math.round(fairPrice - p);
     return (
       <span className="flex items-start gap-1.5 text-xs text-success">
-        <BarChart2 className="mt-0.5 h-3.5 w-3.5 shrink-0" /> {formatPrice(diff)} lebih efisien
+        <BarChart2 className="mt-0.5 h-3.5 w-3.5 shrink-0" /> {formatPrice(diff)} lebih murah
         dari rata-rata
         {count && area ? ` ${count} listing di ${area}` : ""}
       </span>

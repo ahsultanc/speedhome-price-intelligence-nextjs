@@ -35,18 +35,28 @@ function ctaUrl(link: string, stage: UTMStage, listingId: string) {
 export default function ListingsTable({
   listings,
   fairByType,
-  count,
   area,
   unitType,
 }: {
   listings: Listing[];
   fairByType: Record<string, number | null>;
-  count?: number;
   area?: string;
   unitType?: string | null;
 }) {
   const areaName = area ?? "";
   const areaSlug = slugifyArea(areaName);
+
+  // Titles arrive as "<building>, <locality>" where the locality is inconsistent
+  // for the same building (e.g. "Mont Kiara" vs "Kuala Lumpur"). Pin it to the
+  // searched area so one results page reads consistently; skip if the building
+  // already names the area to avoid "...(Mont Kiara), Mont Kiara" stutter.
+  const displayTitle = (l: Listing) => {
+    const i = l.title.lastIndexOf(",");
+    const building = i > 0 ? l.title.slice(0, i).trim() : l.title;
+    if (!areaName) return building;
+    return building.includes(areaName) ? building : `${building}, ${areaName}`;
+  };
+
   const [sort, setSort] = useState<Sort>("closest");
   const [expanded, setExpanded] = useState(false);
 
@@ -165,7 +175,7 @@ export default function ListingsTable({
                     className="border-b border-border/60 align-top"
                   >
                     <td className="max-w-[300px] px-4 py-3">
-                      <span className="block font-medium text-primary">{l.title}</span>
+                      <span className="block font-medium text-primary">{displayTitle(l)}</span>
                       <span className="mt-0.5 block text-xs text-secondary line-clamp-1">
                         {buildingName(l)}
                       </span>
@@ -185,7 +195,7 @@ export default function ListingsTable({
                     </td>
                     <td className="whitespace-nowrap px-4 py-3 text-secondary">{l.furnishing}</td>
                     <td className="min-w-[220px] px-4 py-3">
-                      <FairDealContext listing={l} fairPrice={fairOf(l)} count={count} area={areaName} />
+                      <FairDealContext listing={l} fairPrice={fairOf(l)} count={listings.length} area={areaName} />
                       <ListingExtras l={l} />
                     </td>
                     <td className="px-4 py-3">
@@ -215,7 +225,7 @@ export default function ListingsTable({
                 className="rounded-card border border-border bg-card p-4 shadow-subtle"
               >
                 <div className="flex items-start justify-between gap-3">
-                  <p className="font-medium text-primary">{l.title}</p>
+                  <p className="font-medium text-primary">{displayTitle(l)}</p>
                   <span className="shrink-0 font-medium tabular-nums text-primary">
                     {formatPrice(l.monthly_price)}
                   </span>
@@ -228,7 +238,7 @@ export default function ListingsTable({
                   <span>{formatSqft(l.sqft)}</span>
                 </div>
                 <div className="mt-1">
-                  <FairDealContext listing={l} fairPrice={fairOf(l)} count={count} area={areaName} />
+                  <FairDealContext listing={l} fairPrice={fairOf(l)} count={listings.length} area={areaName} />
                 </div>
                 <ListingExtras l={l} />
                 <a
