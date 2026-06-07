@@ -13,7 +13,7 @@ export default function ListingCompletenessBadge({
   const c = calculateCompleteness(listing, fairPrice);
   const tone =
     c.tone === "good"
-      ? "text-success"
+      ? "text-navy"
       : c.tone === "medium"
         ? "text-accent"
         : "text-secondary";
@@ -22,11 +22,11 @@ export default function ListingCompletenessBadge({
       ? "Info lengkap"
       : c.tone === "medium"
         ? "Info kurang lengkap"
-        : "Info minim — tanya langsung";
+        : "Info minim, tanya langsung";
 
   return (
     <span
-      title={`Listing Completeness — mengukur kelengkapan informasi dari landlord (bukan jaminan kondisi fisik unit). Skor ${c.score}/100.`}
+      title={`Listing Completeness: mengukur kelengkapan informasi dari landlord (bukan jaminan kondisi fisik unit). Skor ${c.score}/100.`}
       className={cn(
         "inline-flex cursor-help items-center gap-1 rounded-full border border-border bg-card px-2 py-0.5 text-[10px] font-semibold",
         tone,

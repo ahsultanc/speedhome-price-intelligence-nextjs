@@ -27,7 +27,7 @@ export default function AreaIntelCard({ area }: { area?: string | null }) {
       {intel.confidence !== "HIGH" && (
         <p className="mt-4 flex items-start gap-1.5 rounded-lg border border-border bg-background px-3 py-2 text-xs text-secondary">
           <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-navy" />
-          Info berdasarkan data umum — lakukan riset mandiri. Data per: {intel.lastUpdated}
+          Info berdasarkan data umum, lakukan riset mandiri. Data per: {intel.lastUpdated}
         </p>
       )}
     </div>

@@ -29,7 +29,7 @@ export default function BudgetFilter({
           bg: "#F0F5F1",
           fg: "#3B6D11",
           Icon: CheckCircle2,
-          msg: "Sehat dan sustainable — di bawah panduan umum 30%",
+          msg: "Sehat dan sustainable, di bawah panduan umum 30%",
         }
       : ratio <= 40
         ? {
@@ -42,7 +42,7 @@ export default function BudgetFilter({
             bg: "#FBEFEF",
             fg: "#A32D2D",
             Icon: AlertCircle,
-            msg: "Berisiko — pertimbangkan area atau unit lain",
+            msg: "Berisiko, pertimbangkan area atau unit lain",
           };
   const StatusIcon = status.Icon;
 

@@ -31,7 +31,7 @@ export const AREA_INTEL: Record<string, AreaIntel> = {
     karakter: "CBD · Urban · Prestisius",
     cocok: "Profesional, ekspatriat",
     lifestyleDesc:
-      "KLCC menempatkan kamu di jantung KL — dekat kantor CBD, KLCC Park, dan MRT.",
+      "KLCC menempatkan kamu di jantung KL, dekat kantor CBD, KLCC Park, dan MRT.",
     highlight: "Akses MRT, pusat bisnis KL",
     character: ["urban", "premium"],
     confidence: "HIGH",
@@ -41,7 +41,7 @@ export const AREA_INTEL: Record<string, AreaIntel> = {
     karakter: "Vibrant · F&B · Creative",
     cocok: "Young professional, creative",
     lifestyleDesc:
-      "Bangsar adalah rumah komunitas kreatif KL — cafe terbaik dan F&B scene ada di sini.",
+      "Bangsar adalah rumah komunitas kreatif KL, cafe terbaik dan F&B scene ada di sini.",
     highlight: "F&B scene, komunitas expat",
     character: ["vibrant"],
     confidence: "HIGH",
@@ -51,7 +51,7 @@ export const AREA_INTEL: Record<string, AreaIntel> = {
     karakter: "Suburban · Family · Mature",
     cocok: "Keluarga, profesional",
     lifestyleDesc:
-      "PJ menawarkan keseimbangan suburban dan akses kota — infrastruktur matang.",
+      "PJ menawarkan keseimbangan suburban dan akses kota, infrastruktur matang.",
     highlight: "Infrastruktur matang, banyak pilihan sekolah",
     character: ["family", "tenang"],
     confidence: "HIGH",

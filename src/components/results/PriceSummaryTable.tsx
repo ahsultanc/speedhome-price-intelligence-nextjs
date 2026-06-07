@@ -14,7 +14,7 @@ const COLUMNS: { key: keyof SummaryRow; label: string; kind: Kind; tip?: string 
     key: "Fair Price (RM)",
     label: "Fair Price",
     kind: "price",
-    tip: "Trimmed mean — buang 10% data termurah & termahal, lalu rata-rata. Mengurangi pengaruh outlier.",
+    tip: "Trimmed mean: buang 10% data termurah & termahal, lalu rata-rata. Mengurangi pengaruh outlier.",
   },
   { key: "Min (RM)", label: "Min", kind: "price" },
   { key: "Max (RM)", label: "Max", kind: "price" },

@@ -2,10 +2,10 @@ import StatusDot from "@/components/shared/StatusDot";
 
 export default function SupplyIndicator({ count }: { count: number }) {
   let tone: "good" | "medium" | "low" = "good";
-  let label = "Banyak pilihan tersedia — kamu punya bargaining power.";
+  let label = "Banyak pilihan tersedia, kamu punya bargaining power.";
   if (count < 50) {
     tone = "low";
-    label = "Pilihan terbatas — pertimbangkan area sekitarnya.";
+    label = "Pilihan terbatas, pertimbangkan area sekitarnya.";
   } else if (count <= 100) {
     tone = "medium";
     label = "Pilihan cukup tersedia.";

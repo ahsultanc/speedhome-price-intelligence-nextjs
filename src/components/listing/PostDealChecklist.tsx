@@ -4,7 +4,7 @@ import CollapsibleChecklist from "./CollapsibleChecklist";
 const ITEMS = [
   "Foto seluruh unit sebelum masuk",
   "Test semua fasilitas hari pertama",
-  "Email landlord — catat yang rusak",
+  "Email landlord: catat yang rusak",
   "Simpan copy tenancy agreement",
   "Dokumentasi kondisi untuk deposit",
   "Simpan kontak landlord + platform",

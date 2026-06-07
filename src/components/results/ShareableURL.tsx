@@ -49,7 +49,7 @@ export default function ShareableURL({
             Sewa rumah sering diputuskan bareng
           </h3>
           <p className="mt-1 text-sm text-secondary">
-            Bagikan data ini ke pasangan, keluarga, atau calon teman sekamar — biar
+            Bagikan data ini ke pasangan, keluarga, atau calon teman sekamar, biar
             semua sepakat dengan angka yang sama.
           </p>
         </div>

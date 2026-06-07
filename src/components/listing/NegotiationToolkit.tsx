@@ -91,7 +91,7 @@ export default function NegotiationToolkit({
             </button>
           </div>
           <p className="text-[11px] italic text-secondary">
-            Data ini adalah referensi pasar — bukan garansi harga. Hasil negosiasi
+            Data ini adalah referensi pasar, bukan garansi harga. Hasil negosiasi
             bergantung pada kondisi masing-masing.
           </p>
         </div>

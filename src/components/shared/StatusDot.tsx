@@ -3,10 +3,11 @@ import { cn } from "@/lib/utils";
 
 type Tone = "good" | "medium" | "low";
 
+// Palette only (off-white/navy/gold/muted) — no raw green/red.
 const COLOR: Record<Tone, string> = {
-  good: "fill-green-500 text-green-500",
-  medium: "fill-yellow-500 text-yellow-500",
-  low: "fill-red-500 text-red-500",
+  good: "fill-navy text-navy",
+  medium: "fill-accent text-accent",
+  low: "fill-[#9B9589] text-[#9B9589]",
 };
 
 /** Replaces the 🟢/🟡/🔴 status emoji with a unified Lucide dot. */

@@ -2,9 +2,9 @@ import { Search } from "lucide-react";
 import CollapsibleChecklist from "./CollapsibleChecklist";
 
 const ITEMS = [
-  "AC — test cooling",
-  "Tekanan air — buka semua kran",
-  "Dinding — cari bekas bocor",
+  "AC: test cooling",
+  "Tekanan air: buka semua kran",
+  "Dinding: cari bekas bocor",
   "Semua kunci berfungsi",
   "Furnitur sesuai foto?",
   "WiFi tersedia?",

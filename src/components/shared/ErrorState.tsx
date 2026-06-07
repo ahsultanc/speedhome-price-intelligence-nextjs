@@ -17,7 +17,7 @@ export default function ErrorState({
       <h3 className="font-display text-2xl text-primary">Ada kendala</h3>
       <p className="mx-auto mt-2 max-w-sm text-secondary">
         {message ||
-          "Tidak bisa mengambil data saat ini. Coba lagi sebentar — biasanya cuma sementara."}
+          "Tidak bisa mengambil data saat ini. Coba lagi sebentar, biasanya cuma sementara."}
       </p>
       {onRetry && (
         <button

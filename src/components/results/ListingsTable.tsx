@@ -119,7 +119,7 @@ export default function ListingsTable({
   return (
     <div className="space-y-4">
       <p className="text-sm text-secondary">
-        Ini semua pilihannya — diurutkan dari yang paling dekat harga wajar.
+        Diurutkan dari yang paling dekat harga wajar.
       </p>
       {listings.length > 0 && (
         <p className="text-xs text-secondary">

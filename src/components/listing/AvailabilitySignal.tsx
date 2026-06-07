@@ -23,7 +23,7 @@ export default function AvailabilitySignal({
       className="inline-flex items-center gap-1 whitespace-nowrap text-[11px] text-accent"
       title="Listing dengan harga jauh di bawah rata-rata sering sudah tidak tersedia."
     >
-      <Lightbulb className="h-3 w-3 text-accent" /> Harga sangat murah — verifikasi ketersediaan dulu
+      <Lightbulb className="h-3 w-3 text-accent" /> Harga sangat murah, verifikasi ketersediaan dulu
     </span>
   );
 }

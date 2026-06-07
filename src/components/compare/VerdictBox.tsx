@@ -80,7 +80,7 @@ export default function VerdictBox({
       </a>
 
       <p className="mt-5 border-t border-white/15 pt-3 text-xs text-background/70">
-        Data — A: {scrapedA ?? "—"} · B: {scrapedB ?? "—"} MYT
+        Data A: {scrapedA ?? "—"} · B: {scrapedB ?? "—"} MYT
       </p>
     </div>
   );

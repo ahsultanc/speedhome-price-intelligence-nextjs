@@ -19,7 +19,7 @@ export default function CTASection({ area }: { area: string }) {
         Kamu sudah tahu harga wajarnya.
       </h3>
       <p className="mx-auto mt-2 max-w-md text-white/80">
-        Sekarang tinggal satu langkah — temukan unit yang cocok untuk kamu.
+        Sekarang tinggal satu langkah: temukan unit yang cocok untuk kamu.
       </p>
       <a
         href={buildSpeedhomeURL(slug, "cta-section")}

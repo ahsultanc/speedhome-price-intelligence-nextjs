@@ -27,7 +27,7 @@ export default function GlobalDisclaimer() {
             <strong className="text-primary">
               {TOTAL_LISTINGS.toLocaleString("en-MY")}
             </strong>{" "}
-            listing aktif dari {TOTAL_AREAS} area Malaysia hari ini
+            listing aktif dari {TOTAL_AREAS} area hari ini
           </p>
         )}
       </div>

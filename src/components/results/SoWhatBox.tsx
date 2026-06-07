@@ -38,7 +38,7 @@ export default function SoWhatBox({
   const p75 = percentile(unitPrices, 0.75);
 
   return (
-    <div className="flex items-start gap-3 rounded-card border border-success/20 bg-sage px-5 py-4">
+    <div className="flex items-start gap-3 rounded-card border border-accent/30 bg-background px-5 py-4">
       <Lightbulb className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
       <p className="text-sm leading-relaxed text-primary">
         {overpayment > 0 ? (
@@ -51,7 +51,7 @@ export default function SoWhatBox({
           <>
             Di <strong>{area}</strong>, kebanyakan orang membayar{" "}
             <strong>{formatPrice(p25)}</strong>–<strong>{formatPrice(p75)}</strong>/bulan
-            untuk <strong>{unit}</strong>. Kalau kamu ditawari lebih dari itu — ada
+            untuk <strong>{unit}</strong>. Kalau kamu ditawari lebih dari itu, ada
             ruang untuk negosiasi.
           </>
         ) : null}
