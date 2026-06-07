@@ -8,8 +8,8 @@ export default function Footer() {
           Sewajar by Jendela Group
         </p>
         <p className="mt-2 max-w-lg text-sm text-secondary">
-          Data dari SPEEDHOME.com · Dibuat karena kami juga pernah bingung dengan
-          harga sewa. · Tidak berafiliasi dengan SPEEDHOME.
+          Data publik dari SPEEDHOME.com — kami tidak berafiliasi. Dibuat karena
+          kami juga pernah bingung dengan harga sewa.
         </p>
         <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-secondary">
           <span>Built by Ahmad Sultan Chaeruddin · Juni 2026</span>

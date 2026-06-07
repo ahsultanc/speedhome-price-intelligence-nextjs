@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
 import type { Listing, SummaryRow } from "@/lib/types";
 import { cn, formatPrice, formatSqft, getGoodDealThreshold, slugifyArea } from "@/lib/utils";
 import type { UTMStage } from "@/lib/utm";
@@ -12,7 +12,10 @@ import AvailabilitySignal from "@/components/listing/AvailabilitySignal";
 import DemandSignal from "@/components/listing/DemandSignal";
 import NegotiationToolkit from "@/components/listing/NegotiationToolkit";
 
-type Sort = "best" | "price-asc" | "price-desc" | "sqft-asc" | "sqft-desc";
+type Sort = "closest" | "best" | "price-asc" | "price-desc" | "sqft-asc" | "sqft-desc";
+
+// How many listings to show before the "Lihat lainnya" toggle.
+const LIMIT = 3;
 
 const listingIdOf = (l: Listing) =>
   l.link.split("?")[0].split("/").filter(Boolean).pop() || l.link;
@@ -47,7 +50,8 @@ export default function ListingsTable({
     [listings],
   );
   const [rooms, setRooms] = useState<string[]>([]);
-  const [sort, setSort] = useState<Sort>("best");
+  const [sort, setSort] = useState<Sort>("closest");
+  const [expanded, setExpanded] = useState(false);
 
   const fairOf = (l: Listing) => getGoodDealThreshold(summary, l.unit_type);
   const isAbove = (l: Listing) => {
@@ -67,6 +71,12 @@ export default function ListingsTable({
     if (t == null || typeof l.monthly_price !== "number") return Infinity;
     return (l.monthly_price - t) / t;
   };
+  // Absolute distance from the unit-type Fair Price (median) — display order only.
+  const closeness = (l: Listing) => {
+    const t = fairOf(l);
+    if (t == null || typeof l.monthly_price !== "number") return Infinity;
+    return Math.abs(l.monthly_price - t);
+  };
   const belowFair = listings.filter((l) => {
     const t = fairOf(l);
     return t != null && typeof l.monthly_price === "number" && l.monthly_price < t;
@@ -76,6 +86,7 @@ export default function ListingsTable({
     let r = rooms.length ? listings.filter((l) => rooms.includes(l.room_type)) : listings;
     r = [...r];
     const n = (v: number | null, dir: number) => v ?? dir * Infinity;
+    if (sort === "closest") r.sort((a, b) => closeness(a) - closeness(b));
     if (sort === "best") r.sort((a, b) => valueScore(a) - valueScore(b));
     if (sort === "price-asc") r.sort((a, b) => n(a.monthly_price, 1) - n(b.monthly_price, 1));
     if (sort === "price-desc") r.sort((a, b) => n(b.monthly_price, -1) - n(a.monthly_price, -1));
@@ -84,6 +95,9 @@ export default function ListingsTable({
     return r;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listings, rooms, sort, summary]);
+
+  const visibleRows = expanded ? rows : rows.slice(0, LIMIT);
+  const hiddenCount = rows.length - LIMIT;
 
   function toggleRoom(r: string) {
     setRooms((prev) => (prev.includes(r) ? prev.filter((x) => x !== r) : [...prev, r]));
@@ -105,7 +119,7 @@ export default function ListingsTable({
   return (
     <div className="space-y-4">
       <p className="text-sm text-secondary">
-        Ini semua pilihannya — diurutkan dari yang paling worth it.
+        Ini semua pilihannya — diurutkan dari yang paling dekat harga wajar.
       </p>
       {listings.length > 0 && (
         <p className="text-xs text-secondary">
@@ -137,6 +151,7 @@ export default function ListingsTable({
           onChange={(e) => setSort(e.target.value as Sort)}
           className="rounded-lg border border-border bg-card px-3 py-2 text-sm text-primary focus:outline-none"
         >
+          <option value="closest">Urut: Terdekat ke harga wajar</option>
           <option value="best">Urut: Paling Worth It</option>
           <option value="price-asc">Price ↑</option>
           <option value="price-desc">Price ↓</option>
@@ -151,7 +166,7 @@ export default function ListingsTable({
           atau area sekitarnya.
         </p>
       ) : (
-        <>
+        <div>
           {/* Desktop table */}
           <div className="hidden overflow-x-auto rounded-card border border-border bg-card shadow-elev1 md:block">
             <table className="w-full min-w-[920px] text-sm">
@@ -165,7 +180,7 @@ export default function ListingsTable({
                 </tr>
               </thead>
               <tbody>
-                {rows.map((l, i) => (
+                {visibleRows.map((l, i) => (
                   <motion.tr
                     key={l.link + i}
                     initial={{ opacity: 0, y: 16 }}
@@ -215,7 +230,7 @@ export default function ListingsTable({
 
           {/* Mobile cards */}
           <div className="space-y-3 md:hidden">
-            {rows.map((l, i) => (
+            {visibleRows.map((l, i) => (
               <motion.div
                 key={l.link + i}
                 initial={{ opacity: 0, y: 16 }}
@@ -251,7 +266,26 @@ export default function ListingsTable({
               </motion.div>
             ))}
           </div>
-        </>
+
+          {hiddenCount > 0 && (
+            <div className="mt-3 flex justify-center">
+              <button
+                onClick={() => setExpanded((v) => !v)}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-border px-5 py-2.5 text-sm font-medium text-primary transition-colors hover:border-accent hover:text-accent"
+              >
+                {expanded ? (
+                  <>
+                    <ChevronUp className="h-4 w-4" /> Tampilkan lebih sedikit
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="h-4 w-4" /> Lihat {hiddenCount} listing lainnya
+                  </>
+                )}
+              </button>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );

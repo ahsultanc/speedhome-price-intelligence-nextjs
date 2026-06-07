@@ -240,8 +240,6 @@ export default function HomeClient() {
               aktif hari ini. Sekarang lihat listing mana yang worth it.
             </p>
 
-            <BudgetFilter key={area} listings={shown} fairPrice={heroFair} area={area} />
-
             <div className="flex flex-wrap items-center justify-between gap-3">
               <RentalTypeTabs value={rental} onChange={setRental} hasYearly={hasYearly} />
               <ExcelExport
@@ -269,26 +267,32 @@ export default function HomeClient() {
               <PriceChart summary={summary} />
             </Collapsible>
 
-            <section className="space-y-3">
-              <h2 className="font-display text-2xl font-semibold text-primary">
-                Unit Listings
-              </h2>
-              <ListingsTable
-                listings={shown}
-                summary={summary}
-                count={inAreaCount}
-                area={area}
-              />
-            </section>
+            {/* Listing block + affordability calculator kept as one tighter group. */}
+            <div className="space-y-5">
+              <section className="space-y-3">
+                <h2 className="font-display text-2xl font-semibold text-primary">
+                  Unit Listings
+                </h2>
+                <ListingsTable
+                  listings={shown}
+                  summary={summary}
+                  count={inAreaCount}
+                  area={area}
+                />
+              </section>
+
+              <BudgetFilter key={area} listings={shown} fairPrice={heroFair} area={area} />
+            </div>
 
             <CTASection area={area} />
+
+            <SimilarAreas area={area} />
 
             <div className="grid gap-4 md:grid-cols-2">
               <PreSurveyChecklist />
               <PostDealChecklist />
             </div>
 
-            <SimilarAreas area={area} />
             <ShareableURL area={area} rental={rental} onSelect={selectSaved} />
             <FeedbackWidget />
 
