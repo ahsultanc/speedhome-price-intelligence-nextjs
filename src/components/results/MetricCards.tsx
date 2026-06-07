@@ -96,11 +96,13 @@ export default function MetricCards({
   area,
   heroUnit,
   heroFair,
+  sampleCount,
 }: {
   metrics: OverallMetrics;
   area: string;
   heroUnit?: string;
   heroFair?: number | null;
+  sampleCount?: number;
 }) {
   const cards = [
     { label: "Average", value: metrics.avg, format: formatPrice, delay: 0, note: "(termasuk unit premium)" },
@@ -144,6 +146,13 @@ export default function MetricCards({
           averagePrice={metrics.avg}
           fairPrice={heroFair ?? metrics.fairPrice}
         />
+        {typeof sampleCount === "number" && sampleCount > 0 && (
+          <p className="mt-2 text-xs text-secondary">
+            berdasarkan {sampleCount.toLocaleString("en-MY")} listing
+            {heroUnit ? ` ${heroUnit}` : ""}
+            {sampleCount < 3 ? " · sampel kecil, anggap sebagai indikasi awal" : ""}
+          </p>
+        )}
       </motion.div>
     </div>
   );

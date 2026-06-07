@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import type { Listing } from "@/lib/types";
+import type { Listing, SummaryRow } from "@/lib/types";
 
 /** Tailwind-aware className merge. */
 export function cn(...inputs: ClassValue[]): string {
@@ -54,6 +54,26 @@ export function getGoodDealThreshold(
   return row && typeof row["Fair Price (RM)"] === "number"
     ? row["Fair Price (RM)"]
     : null;
+}
+
+/** Leading bedroom count of a unit type ("3BR" → 3, "4BR+" → 4, "Studio" → 0). */
+function unitTypeRank(unitType: string): number {
+  const m = unitType.match(/\d+/);
+  return m ? parseInt(m[0], 10) : 0;
+}
+
+/**
+ * The default unit type for an area: the one with the most listings. Ties break
+ * deterministically toward the smallest unit (fewest bedrooms), so the same area
+ * always lands on the same default. Returns null when there is no summary data.
+ */
+export function defaultUnitType(summary: SummaryRow[] | undefined): string | null {
+  if (!summary || !summary.length) return null;
+  return [...summary].sort(
+    (a, b) =>
+      b.Count - a.Count ||
+      unitTypeRank(a["Unit Type"]) - unitTypeRank(b["Unit Type"]),
+  )[0]["Unit Type"];
 }
 
 /* ----------------------------- stats helpers ----------------------------- */

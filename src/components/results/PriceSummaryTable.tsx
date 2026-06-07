@@ -37,7 +37,13 @@ function render(row: SummaryRow, key: keyof SummaryRow, kind: Kind) {
   return formatPrice(v as number | null);
 }
 
-export default function PriceSummaryTable({ summary }: { summary: SummaryRow[] }) {
+export default function PriceSummaryTable({
+  summary,
+  highlight,
+}: {
+  summary: SummaryRow[];
+  highlight?: string | null;
+}) {
   if (!summary.length) {
     return (
       <p className="rounded-card border border-border bg-card px-5 py-4 text-sm text-secondary">
@@ -68,10 +74,16 @@ export default function PriceSummaryTable({ summary }: { summary: SummaryRow[] }
           </tr>
         </thead>
         <tbody>
-          {summary.map((row, i) => (
+          {summary.map((row, i) => {
+            const isSelected = highlight != null && row["Unit Type"] === highlight;
+            return (
             <tr
               key={String(row["Unit Type"])}
-              className={cn("border-b border-border/60", i % 2 === 1 && "bg-background/40")}
+              className={cn(
+                "border-b border-border/60",
+                i % 2 === 1 && "bg-background/40",
+                isSelected && "bg-accent/10 ring-1 ring-inset ring-accent/40",
+              )}
             >
               {COLUMNS.map((c) => (
                 <td
@@ -82,7 +94,8 @@ export default function PriceSummaryTable({ summary }: { summary: SummaryRow[] }
                 </td>
               ))}
             </tr>
-          ))}
+            );
+          })}
         </tbody>
       </table>
     </div>

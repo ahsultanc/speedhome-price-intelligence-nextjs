@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Wallet, CheckCircle2, AlertTriangle, AlertCircle, Check, X } from "lucide-react";
 import type { Listing } from "@/lib/types";
 
@@ -15,6 +15,16 @@ export default function BudgetFilter({
 }) {
   const [income, setIncome] = useState("");
   const [rent, setRent] = useState(fairPrice ? String(Math.round(fairPrice)) : "");
+
+  // Re-prefill the rent field when the selected unit type changes (new Fair
+  // Price), while preserving whatever income the user has already typed.
+  const lastFair = useRef(fairPrice);
+  useEffect(() => {
+    if (fairPrice !== lastFair.current) {
+      lastFair.current = fairPrice;
+      setRent(fairPrice ? String(Math.round(fairPrice)) : "");
+    }
+  }, [fairPrice]);
 
   const incomeN = parseInt(income.replace(/[^0-9]/g, ""), 10);
   const rentN = parseInt(rent.replace(/[^0-9]/g, ""), 10);

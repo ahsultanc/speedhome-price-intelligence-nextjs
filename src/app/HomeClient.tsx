@@ -21,6 +21,7 @@ import SupplyIndicator from "@/components/results/SupplyIndicator";
 import PriceSummaryTable from "@/components/results/PriceSummaryTable";
 import RentalTypeTabs from "@/components/results/RentalTypeTabs";
 import PriceChart from "@/components/results/PriceChart";
+import UnitTypeSelector from "@/components/results/UnitTypeSelector";
 import ListingsTable from "@/components/results/ListingsTable";
 import ExcelExport from "@/components/results/ExcelExport";
 import ShareableURL from "@/components/results/ShareableURL";
@@ -28,7 +29,7 @@ import SimilarAreas from "@/components/results/SimilarAreas";
 import CTASection from "@/components/results/CTASection";
 import PreSurveyChecklist from "@/components/listing/PreSurveyChecklist";
 import PostDealChecklist from "@/components/listing/PostDealChecklist";
-import { computeMetrics, filterByRentalType } from "@/lib/utils";
+import { computeMetrics, defaultUnitType, filterByRentalType } from "@/lib/utils";
 import { getReferralSource } from "@/lib/utm";
 import type { RentalType, ScrapeResult } from "@/lib/types";
 
@@ -43,6 +44,9 @@ export default function HomeClient() {
   const [result, setResult] = useState<ScrapeResult | null>(null);
   const [errMsg, setErrMsg] = useState("");
   const [rental, setRental] = useState<RentalType>("monthly");
+  // Single source of truth for the unit-type scope (headline, cards, listings,
+  // sort, calculator). null = fall back to the area's most common type.
+  const [selectedUnitType, setSelectedUnitType] = useState<string | null>(null);
   const [lastQuery, setLastQuery] = useState("");
   const [note, setNote] = useState<string | undefined>();
   const [isReferral, setIsReferral] = useState(false);
@@ -53,6 +57,7 @@ export default function HomeClient() {
     setResult(null);
     setErrMsg("");
     setRental("monthly");
+    setSelectedUnitType(null);
     setLastQuery(query);
     setNote(searchNote);
     try {
@@ -89,6 +94,9 @@ export default function HomeClient() {
     if (a) {
       if (sp.get("type") === "yearly") setRental("yearly");
       search(a);
+      // Restore shared unit-type scope; validated against the data once loaded.
+      const u = sp.get("unit");
+      if (u) setSelectedUnitType(u);
     }
     /* eslint-enable react-hooks/set-state-in-effect */
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -115,6 +123,7 @@ export default function HomeClient() {
     setLastQuery("");
     setNote(undefined);
     setRental("monthly");
+    setSelectedUnitType(null);
     // Drop ?area/?ref from the URL so a later refresh stays on the search view.
     if (typeof window !== "undefined" && window.location.search) {
       window.history.replaceState(null, "", window.location.pathname);
@@ -132,16 +141,29 @@ export default function HomeClient() {
   const summary = rental === "monthly" ? summaryMonthly : summaryYearly;
   const shown = filterByRentalType(listings, rental);
   const monthlyListings = filterByRentalType(listings, "monthly");
-  const metrics = computeMetrics(shown);
   const hasYearly = filterByRentalType(listings, "yearly").length > 0;
   const area = result?.meta?.area ?? lastQuery;
   const inAreaCount = result?.meta?.in_area_count ?? listings.length;
   const noData = status === "done" && listings.length === 0;
-  const topRow = summary.length
-    ? [...summary].sort((a, b) => b.Count - a.Count)[0]
-    : undefined;
-  const heroUnit = topRow?.["Unit Type"];
-  const heroFair = topRow?.["Fair Price (RM)"] ?? metrics.fairPrice;
+
+  // Resolve the active unit-type scope: the user's pick if it still exists in
+  // the current (rental-specific) summary, otherwise the area's default type.
+  const unitTypes = summary.map((r) => r["Unit Type"]);
+  const fallbackUnit = defaultUnitType(summary);
+  const selectedUnit =
+    selectedUnitType && unitTypes.includes(selectedUnitType)
+      ? selectedUnitType
+      : fallbackUnit;
+  const selectedRow = summary.find((r) => r["Unit Type"] === selectedUnit);
+
+  // Everything below the headline is scoped to the selected unit type so the
+  // Fair Price, the stat cards, and the listings all describe the same thing.
+  const typeListings = selectedUnit
+    ? shown.filter((l) => l.unit_type === selectedUnit)
+    : shown;
+  const metrics = computeMetrics(typeListings);
+  const heroUnit = selectedUnit ?? undefined;
+  const heroFair = selectedRow?.["Fair Price (RM)"] ?? metrics.fairPrice;
 
   return (
     <main className="flex-1">
@@ -215,7 +237,20 @@ export default function HomeClient() {
             className="space-y-8"
           >
             {/* Fair Price first — the answer is above the fold, no scrolling. */}
-            <MetricCards metrics={metrics} area={area} heroUnit={heroUnit} heroFair={heroFair} />
+            <MetricCards
+              metrics={metrics}
+              area={area}
+              heroUnit={heroUnit}
+              heroFair={heroFair}
+              sampleCount={typeListings.length}
+            />
+
+            {/* Scope selector — drives the headline, cards, listings and calculator. */}
+            <UnitTypeSelector
+              summary={summary}
+              value={selectedUnit}
+              onChange={setSelectedUnitType}
+            />
 
             <div className="flex flex-col items-center gap-3">
               <Timestamp time={result?.meta?.scraped_at} count={inAreaCount} />
@@ -254,7 +289,7 @@ export default function HomeClient() {
               <h2 className="font-display text-2xl font-semibold text-primary">
                 Price Summary by Unit Type
               </h2>
-              <PriceSummaryTable summary={summary} />
+              <PriceSummaryTable summary={summary} highlight={selectedUnit} />
             </section>
 
             <Collapsible
@@ -274,14 +309,20 @@ export default function HomeClient() {
                   Unit Listings
                 </h2>
                 <ListingsTable
-                  listings={shown}
+                  listings={typeListings}
                   summary={summary}
                   count={inAreaCount}
                   area={area}
+                  unitType={selectedUnit}
                 />
               </section>
 
-              <BudgetFilter key={area} listings={shown} fairPrice={heroFair} area={area} />
+              <BudgetFilter
+                key={area}
+                listings={typeListings}
+                fairPrice={heroFair}
+                area={area}
+              />
             </div>
 
             <CTASection area={area} />
@@ -293,7 +334,12 @@ export default function HomeClient() {
               <PostDealChecklist />
             </div>
 
-            <ShareableURL area={area} rental={rental} onSelect={selectSaved} />
+            <ShareableURL
+              area={area}
+              rental={rental}
+              unitType={selectedUnit}
+              onSelect={selectSaved}
+            />
             <FeedbackWidget />
 
             <p className="pt-2 text-center text-[10px] uppercase tracking-[0.2em] text-border">

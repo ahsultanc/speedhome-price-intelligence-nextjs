@@ -15,10 +15,12 @@ const KEY = "speedhome_saved_searches";
 export default function ShareableURL({
   area,
   rental,
+  unitType,
   onSelect,
 }: {
   area: string;
   rental: RentalType;
+  unitType?: string | null;
   onSelect?: (area: string, rental: RentalType) => void;
 }) {
   const [copied, setCopied] = useState(false);
@@ -26,7 +28,9 @@ export default function ShareableURL({
 
   function share() {
     const slug = slugifyArea(area);
-    const url = `${window.location.origin}/?area=${slug}&ref=share`;
+    // Carry the chosen unit-type scope so the recipient lands on the same view.
+    const unitParam = unitType ? `&unit=${encodeURIComponent(unitType)}` : "";
+    const url = `${window.location.origin}/?area=${slug}${unitParam}&ref=share`;
     navigator.clipboard?.writeText(url).catch(() => {});
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);

@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
 import type { Listing, SummaryRow } from "@/lib/types";
-import { cn, formatPrice, formatSqft, getGoodDealThreshold, slugifyArea } from "@/lib/utils";
+import { formatPrice, formatSqft, getGoodDealThreshold, slugifyArea } from "@/lib/utils";
 import type { UTMStage } from "@/lib/utm";
 import ListingCompletenessBadge from "@/components/listing/ListingCompletenessBadge";
 import FairDealContext from "@/components/listing/FairDealContext";
@@ -37,19 +37,16 @@ export default function ListingsTable({
   summary,
   count,
   area,
+  unitType,
 }: {
   listings: Listing[];
   summary: SummaryRow[];
   count?: number;
   area?: string;
+  unitType?: string | null;
 }) {
   const areaName = area ?? "";
   const areaSlug = slugifyArea(areaName);
-  const roomTypes = useMemo(
-    () => Array.from(new Set(listings.map((l) => l.room_type).filter(Boolean))).sort(),
-    [listings],
-  );
-  const [rooms, setRooms] = useState<string[]>([]);
   const [sort, setSort] = useState<Sort>("closest");
   const [expanded, setExpanded] = useState(false);
 
@@ -83,8 +80,7 @@ export default function ListingsTable({
   }).length;
 
   const rows = useMemo(() => {
-    let r = rooms.length ? listings.filter((l) => rooms.includes(l.room_type)) : listings;
-    r = [...r];
+    const r = [...listings];
     const n = (v: number | null, dir: number) => v ?? dir * Infinity;
     if (sort === "closest") r.sort((a, b) => closeness(a) - closeness(b));
     if (sort === "best") r.sort((a, b) => valueScore(a) - valueScore(b));
@@ -94,14 +90,10 @@ export default function ListingsTable({
     if (sort === "sqft-desc") r.sort((a, b) => n(b.sqft, -1) - n(a.sqft, -1));
     return r;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [listings, rooms, sort, summary]);
+  }, [listings, sort, summary]);
 
   const visibleRows = expanded ? rows : rows.slice(0, LIMIT);
   const hiddenCount = rows.length - LIMIT;
-
-  function toggleRoom(r: string) {
-    setRooms((prev) => (prev.includes(r) ? prev.filter((x) => x !== r) : [...prev, r]));
-  }
 
   function ListingExtras({ l }: { l: Listing }) {
     if (!isAbove(l)) return null;
@@ -119,33 +111,17 @@ export default function ListingsTable({
   return (
     <div className="space-y-4">
       <p className="text-sm text-secondary">
-        Diurutkan dari yang paling dekat harga wajar.
+        Menampilkan listing {unitType ?? "semua tipe"}, diurutkan dari yang paling
+        dekat harga wajar.
       </p>
       {listings.length > 0 && (
         <p className="text-xs text-secondary">
           <strong className="text-primary">{belowFair}</strong> dari {listings.length}{" "}
-          listing di bawah harga wajar area ini
+          listing {unitType ?? ""} di bawah harga wajar
         </p>
       )}
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-1.5">
-          <span className="text-xs text-secondary">Tampilkan tipe:</span>
-          {roomTypes.map((r) => (
-            <button
-              key={r}
-              onClick={() => toggleRoom(r)}
-              className={cn(
-                "rounded-full border px-3 py-1 text-xs font-medium transition-colors",
-                rooms.includes(r)
-                  ? "border-accent bg-accent/10 text-accent"
-                  : "border-border text-secondary hover:border-accent hover:text-primary",
-              )}
-            >
-              {r}
-            </button>
-          ))}
-        </div>
+      <div className="flex flex-wrap items-center justify-end gap-3">
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value as Sort)}
@@ -162,7 +138,7 @@ export default function ListingsTable({
 
       {rows.length === 0 ? (
         <p className="rounded-card border border-border bg-card px-5 py-4 text-sm text-secondary">
-          Tidak ada listing {rooms.join(", ") || "tipe ini"} hari ini. Coba tipe lain
+          Tidak ada listing {unitType ?? "tipe ini"} hari ini. Coba tipe lain
           atau area sekitarnya.
         </p>
       ) : (
