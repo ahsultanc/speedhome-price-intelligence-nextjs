@@ -19,12 +19,12 @@ export async function generateMetadata({
   const areaName = toAreaName(area);
 
   return {
-    title: `Harga Sewa ${areaName} — Sewajar`,
+    title: `Harga Sewa ${areaName} | Sewajar`,
     description: `Cek harga sewa wajar di ${areaName}. Data real-time dari SPEEDHOME. Gratis, tanpa daftar.`,
     alternates: { canonical: `/?area=${area}` },
     openGraph: {
       title: `Harga Sewa ${areaName} 2026`,
-      description: `Fair Price, listing terbaik, dan perbandingan area di ${areaName} Malaysia.`,
+      description: `Fair Price, listing terbaik, dan perbandingan area di ${areaName}.`,
     },
   };
 }
@@ -44,7 +44,7 @@ export default async function Page({
         "@context": "https://schema.org",
         "@type": "Dataset",
         name: `Data Harga Sewa ${areaName}`,
-        description: `Data harga sewa properti di ${areaName} Malaysia, termasuk harga wajar dan analisis per tipe unit.`,
+        description: `Data harga sewa properti di ${areaName}, termasuk harga wajar dan analisis per tipe unit.`,
         creator: {
           "@type": "Organization",
           name: "Sewajar by Jendela Group",

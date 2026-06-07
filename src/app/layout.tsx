@@ -21,19 +21,19 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://speedhome-price-intelligence-nextjs.vercel.app"),
-  title: "Sewajar — Harga Sewa Wajar",
+  title: "Sewajar | Harga Sewa Wajar",
   description:
     "Stress soal harga sewa? Sewajar kasih tahu harga wajarnya. Data real-time dari SPEEDHOME. Gratis, tanpa daftar. by Jendela Group.",
   keywords: [
-    "harga sewa Malaysia",
+    "harga sewa",
     "harga sewa KL",
-    "sewa apartemen Malaysia",
+    "sewa apartemen",
     "harga wajar sewa",
     "Sewajar",
   ],
   authors: [{ name: "Ahmad Sultan Chaeruddin" }],
   openGraph: {
-    title: "Sewajar — Harga Sewa Wajar",
+    title: "Sewajar | Harga Sewa Wajar",
     description: "Stress soal harga sewa? Kami kasih tahu harga wajarnya.",
     url: "https://speedhome-price-intelligence-nextjs.vercel.app",
     siteName: "Sewajar",
@@ -54,7 +54,7 @@ const jsonLd = {
   "@type": "WebApplication",
   name: "Sewajar",
   description:
-    "Harga sewa wajar untuk area di Malaysia. Data real-time dari SPEEDHOME.",
+    "Harga sewa wajar untuk area di kawasan urban. Data real-time dari SPEEDHOME.",
   applicationCategory: "UtilityApplication",
   operatingSystem: "Web",
   offers: {
