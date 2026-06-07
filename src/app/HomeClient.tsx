@@ -2,13 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { MapPin, BarChart2, Users } from "lucide-react";
+import { MapPin, BarChart2, Users, ArrowLeft } from "lucide-react";
 import HeroSection, { heroContainer, heroItem } from "@/components/home/HeroSection";
 import SearchBar from "@/components/home/SearchBar";
 import TrustSignals from "@/components/home/TrustSignals";
 import PopularAreas from "@/components/home/PopularAreas";
 import BudgetFilter from "@/components/home/BudgetFilter";
-import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import ErrorState from "@/components/shared/ErrorState";
 import EmptyState from "@/components/shared/EmptyState";
 import Timestamp from "@/components/shared/Timestamp";
@@ -95,10 +94,11 @@ export default function HomeClient() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Smooth scroll to results once loaded.
+  // Results replace the hero, so bring the viewport to the top — the Fair Price
+  // becomes the first thing visible without scrolling.
   useEffect(() => {
-    if (status === "done" && resultsRef.current) {
-      resultsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (status === "done") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [status, result]);
 
@@ -106,6 +106,25 @@ export default function HomeClient() {
     setRental(r);
     search(a);
   }
+
+  // Return to the hero/search view so the user is never trapped in results.
+  function resetToSearch() {
+    setStatus("idle");
+    setResult(null);
+    setErrMsg("");
+    setLastQuery("");
+    setNote(undefined);
+    setRental("monthly");
+    // Drop ?area/?ref from the URL so a later refresh stays on the search view.
+    if (typeof window !== "undefined" && window.location.search) {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+    window.scrollTo({ top: 0 });
+  }
+
+  // Hero stays through loading (the search button shows its own spinner) and is
+  // replaced only once results arrive — or on an error/empty result.
+  const showHero = status === "idle" || status === "loading";
 
   const listings = result?.listings ?? [];
   const summaryMonthly = result?.summary_monthly ?? [];
@@ -126,60 +145,78 @@ export default function HomeClient() {
 
   return (
     <main className="flex-1">
-      <motion.div variants={heroContainer} initial="hidden" animate="visible">
-        <HeroSection />
-        <section className="px-6">
-          <motion.div variants={heroItem}>
-            <TrustSignals />
-          </motion.div>
-          <motion.div variants={heroItem}>
-            <PopularAreas onSelect={selectSaved} />
-          </motion.div>
-          <motion.div variants={heroItem} className="mt-8">
-            <SearchBar
-              onSearch={(q, n) => search(q, strict, n)}
-              loading={status === "loading"}
-              strict={strict}
-              onStrictChange={setStrict}
+      {showHero && (
+        <motion.div variants={heroContainer} initial="hidden" animate="visible">
+          <HeroSection />
+          <section className="px-6">
+            <motion.div variants={heroItem}>
+              <TrustSignals />
+            </motion.div>
+            <motion.div variants={heroItem}>
+              <PopularAreas onSelect={selectSaved} />
+            </motion.div>
+            <motion.div variants={heroItem} className="mt-8">
+              <SearchBar
+                onSearch={(q, n) => search(q, strict, n)}
+                loading={status === "loading"}
+                strict={strict}
+                onStrictChange={setStrict}
+              />
+            </motion.div>
+          </section>
+        </motion.div>
+      )}
+
+      {!showHero && (
+        <div ref={resultsRef} className="mx-auto max-w-5xl px-6 py-8">
+          {/* Always available so the user can return to search — never trapped. */}
+          <div className="mb-6 flex items-center justify-between gap-3">
+            <button
+              onClick={resetToSearch}
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-secondary transition-colors hover:text-primary"
+            >
+              <ArrowLeft className="h-4 w-4" /> Cari area lain
+            </button>
+            {status === "done" && area && (
+              <span className="font-display text-lg font-semibold text-primary">{area}</span>
+            )}
+          </div>
+
+          {isReferral && status === "done" && (
+            <p className="mb-4 flex items-center justify-center gap-1.5 text-center text-sm text-accent">
+              <Users className="h-4 w-4 shrink-0" /> Seseorang membagikan data area ini untuk
+              kamu.
+            </p>
+          )}
+          {note && status === "done" && (
+            <p className="mb-6 flex items-center gap-1.5 rounded-lg border border-border bg-card px-4 py-2 text-sm text-secondary">
+              <MapPin className="h-4 w-4 shrink-0 text-navy" /> {note}
+            </p>
+          )}
+
+          {status === "error" && (
+            <ErrorState message={errMsg} onRetry={() => lastQuery && search(lastQuery)} />
+          )}
+          {noData && (
+            <EmptyState
+              area={area}
+              onDisableStrict={() => {
+                setStrict(false);
+                search(lastQuery, false);
+              }}
             />
-          </motion.div>
-        </section>
-      </motion.div>
+          )}
 
-      <div ref={resultsRef} className="mx-auto max-w-5xl px-6 py-12">
-        {isReferral && status === "done" && (
-          <p className="mb-4 flex items-center justify-center gap-1.5 text-center text-sm text-accent">
-            <Users className="h-4 w-4 shrink-0" /> Seseorang membagikan data area ini untuk
-            kamu.
-          </p>
-        )}
-        {note && status === "done" && (
-          <p className="mb-6 flex items-center gap-1.5 rounded-lg border border-border bg-card px-4 py-2 text-sm text-secondary">
-            <MapPin className="h-4 w-4 shrink-0 text-navy" /> {note}
-          </p>
-        )}
-
-        {status === "loading" && <LoadingSpinner />}
-        {status === "error" && (
-          <ErrorState message={errMsg} onRetry={() => lastQuery && search(lastQuery)} />
-        )}
-        {noData && (
-          <EmptyState
-            area={area}
-            onDisableStrict={() => {
-              setStrict(false);
-              search(lastQuery, false);
-            }}
-          />
-        )}
-
-        {status === "done" && listings.length > 0 && (
+          {status === "done" && listings.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
             className="space-y-8"
           >
+            {/* Fair Price first — the answer is above the fold, no scrolling. */}
+            <MetricCards metrics={metrics} area={area} heroUnit={heroUnit} heroFair={heroFair} />
+
             <div className="flex flex-col items-center gap-3">
               <Timestamp time={result?.meta?.scraped_at} count={inAreaCount} />
               {result?.is_demo && (
@@ -198,9 +235,6 @@ export default function HomeClient() {
             </p>
 
             <SoWhatBox listings={monthlyListings} summary={summaryMonthly} area={area} />
-            <div className="pt-4">
-              <MetricCards metrics={metrics} area={area} heroUnit={heroUnit} heroFair={heroFair} />
-            </div>
             <p className="text-center text-sm text-secondary">
               Ini harga wajarnya berdasarkan {inAreaCount.toLocaleString("en-MY")} listing
               aktif hari ini. Sekarang lihat listing mana yang worth it.
@@ -262,8 +296,9 @@ export default function HomeClient() {
               SEWAJAR
             </p>
           </motion.div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </main>
   );
 }
