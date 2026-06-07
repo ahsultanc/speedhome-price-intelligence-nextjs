@@ -1,6 +1,6 @@
 "use client";
 
-import { AREA_INTEL } from "@/lib/areaIntel";
+import { DEMO_AREAS } from "@/lib/constants";
 import demoResponses from "@/data/demoResponses.json";
 import type { RentalType } from "@/lib/types";
 
@@ -10,11 +10,12 @@ const DEMO = demoResponses as unknown as Record<
 >;
 const keyOf = (area: string) => area.toLowerCase().replace(/[^a-z0-9]/g, "");
 
-// Top 6 areas by demo listing count (areas with data first).
-const POPULAR = Object.keys(AREA_INTEL)
-  .map((area) => ({ area, count: DEMO[keyOf(area)]?.meta?.radius_count ?? 0 }))
-  .sort((a, b) => b.count - a.count)
-  .slice(0, 6);
+// Only the areas that actually have data — matches the hero's "4 area, data
+// lengkap" claim, so a suggested chip never leads to an empty result.
+const POPULAR = DEMO_AREAS.map((area) => ({
+  area,
+  count: DEMO[keyOf(area)]?.meta?.radius_count ?? 0,
+})).sort((a, b) => b.count - a.count);
 
 export default function PopularAreas({
   onSelect,
