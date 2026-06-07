@@ -1,6 +1,6 @@
 import { Lightbulb } from "lucide-react";
 import type { Listing, SummaryRow } from "@/lib/types";
-import { formatPrice, mean, trimmedMean } from "@/lib/utils";
+import { formatPrice, mean, fairPrice } from "@/lib/utils";
 
 function percentile(sorted: number[], p: number): number | null {
   if (!sorted.length) return null;
@@ -27,7 +27,7 @@ export default function SoWhatBox({
     .map((l) => l.monthly_price)
     .filter((v): v is number => typeof v === "number" && v > 0);
   const avg = mean(allPrices);
-  const fair = trimmedMean(allPrices);
+  const fair = fairPrice(allPrices);
   const overpayment = avg != null && fair != null ? avg - fair : 0;
 
   const unitPrices = listings
