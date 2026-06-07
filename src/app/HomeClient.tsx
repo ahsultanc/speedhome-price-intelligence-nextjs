@@ -232,6 +232,7 @@ export default function HomeClient() {
           {noData && (
             <EmptyState
               area={area}
+              onPickArea={(a) => search(a)}
               onDisableStrict={() => {
                 setStrict(false);
                 search(lastQuery, false);

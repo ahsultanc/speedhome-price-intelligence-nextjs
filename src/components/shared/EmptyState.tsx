@@ -1,13 +1,16 @@
 "use client";
 
 import { SearchX } from "lucide-react";
+import { DEMO_AREAS } from "@/lib/constants";
 
 export default function EmptyState({
   area,
   onDisableStrict,
+  onPickArea,
 }: {
   area?: string | null;
   onDisableStrict?: () => void;
+  onPickArea?: (area: string) => void;
 }) {
   return (
     <div className="mx-auto max-w-md px-6 py-16 text-center">
@@ -15,18 +18,33 @@ export default function EmptyState({
         <SearchX className="h-6 w-6" />
       </div>
       <h3 className="font-display text-2xl text-primary">
-        Tidak ada listing ditemukan{area ? ` di ${area}` : ""}
+        Belum ada data untuk area ini{area ? ` (${area})` : ""}
       </h3>
       <p className="mx-auto mt-2 max-w-sm text-secondary">
-        Coba: (1) matikan filter <em>“Only show listings in this area”</em>, atau
-        (2) pilih area lain.
+        Saat ini kami punya data lengkap untuk {DEMO_AREAS.length} area. Coba salah
+        satu di bawah, atau pilih area lain lewat pencarian.
       </p>
+
+      {onPickArea && (
+        <div className="mt-5 flex flex-wrap justify-center gap-2">
+          {DEMO_AREAS.map((a) => (
+            <button
+              key={a}
+              onClick={() => onPickArea(a)}
+              className="rounded-full border border-border bg-background px-4 py-1.5 text-sm text-primary transition-colors hover:border-navy hover:bg-navy hover:text-white"
+            >
+              {a}
+            </button>
+          ))}
+        </div>
+      )}
+
       {onDisableStrict && (
         <button
           onClick={onDisableStrict}
-          className="mt-6 rounded-lg border border-border px-5 py-2.5 text-sm font-medium text-primary transition-colors hover:border-accent hover:text-accent"
+          className="mt-6 block w-full text-sm font-medium text-secondary transition-colors hover:text-accent"
         >
-          Tampilkan area sekitar
+          atau tampilkan listing di area sekitar
         </button>
       )}
     </div>
